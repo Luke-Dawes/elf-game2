@@ -12,4 +12,5 @@ ideas:
     different types of elves 
     comeback mechanic - double or nothing 
     random events
+    if you kill a load of elves can they rebel 
     
