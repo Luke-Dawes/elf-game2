@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 from TeamClass import Team
+import random
+import time
 
 class ElfGame:
     def __init__(self, root):
@@ -12,6 +14,9 @@ class ElfGame:
         self.current_turn = 1
         self.current_team_idx = 0
         self.num_teams = 4
+
+        #snow
+        self.snowList = []
         
         # Location Multipliers (Money earned per elf)
         self.locations = [
@@ -113,7 +118,49 @@ class ElfGame:
 
         self.refresh_ui()
 
-    def rewards(self, snowStorm: bool=False): #process the money, maybe show a graphic of a snow storm etc so its all together at the end
+
+    #SNOW
+    def moveSnow(self):
+        for particile in self.snowList: 
+            self.canvas.move(particile, 0, 1) #makes the y coordinate of particle decrease by 1
+
+            #x1, y1, x2, y2 = self.canvas.coords(particile)
+
+        self.root.after(33, self.moveSnow) #async (keeps this function running every .3) but lets the game continue
+
+    def stopSnow(self): #deletes all the snow
+        for snow in self.snowList: 
+            self.canvas.delete(snow) #deletes the snow from the canvas
+        self.snowList.clear() #clears the list
+        self.canvas.destroy() #destroys the canvas (the background)
+
+    def makeSnow(self):
+
+        self.canvas = tk.Canvas(self.root, width=700, height=600, bg='Black') #BROKEN ===================================== doesnt fully cover the screen
+        self.canvas.pack() #display the canvas
+
+        self.snowList = []
+        for _ in range(50):
+            x = random.randint(0,700)
+            y = random.randint(0,500)
+            size = 5
+
+            snow = self.canvas.create_rectangle(x, y, x + size, y + size, fill='white', outline='') #ceate rectangles for snow
+
+            self.snowList.append(snow) #add it to the list
+        
+        self.moveSnow() #call the move snow func once, thought it runs async
+
+        self.root.after(4000, self.stopSnow) #after like 3 seconds it calls stop snow which deletes everthting
+        
+
+
+
+
+    def rewards(self, snowStorm: bool=True): #process the money, maybe show a graphic of a snow storm etc so its all together at the end
+
+        if snowStorm: #only runs if there is a snowstorm
+            self.makeSnow()
 
         for team in self.teams_data: #for each team
             totalInc = 0
