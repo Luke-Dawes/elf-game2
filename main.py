@@ -120,6 +120,8 @@ class ElfGame:
 
 
     #SNOW
+    #https://www.tutorialspoint.com/article/how-to-clear-tkinter-canvas#:~:text=In%20order%20to%20clear%20a,present%20in%20a%20Tkinter%20frame. 
+    #https://stackoverflow.com/questions/45388420/python-3-tkinter-how-to-use-after-on-canvas-graphics 
     def moveSnow(self):
         for particile in self.snowList: 
             self.canvas.move(particile, 0, 1) #makes the y coordinate of particle decrease by 1
