@@ -33,7 +33,7 @@ class ElfGame:
         self.create_widgets()
         self.refresh_ui()
 
-    def create_widgets(self):
+    def create_widgets(self) -> None:
         # Header Info
         self.header_label = tk.Label(self.root, text="", font=("Arial", 16, "bold"))
         self.header_label.pack(pady=10)
@@ -67,7 +67,7 @@ class ElfGame:
             lbl.pack(side="left", expand=True)
             self.leaderboard_labels.append(lbl)
 
-    def refresh_ui(self):
+    def refresh_ui(self) -> None:
         team = self.teams_data[self.current_team_idx]
         self.header_label.config(text=f"Turn {self.current_turn}: {team.name}'s Move") #instead of using team["name"] its now a class syntax
         self.team_info_label.config(text=f"Available Elves: {team.elves} | Current Money: ${team.money}") #changed here aswell
@@ -76,7 +76,7 @@ class ElfGame:
             t = self.teams_data[i]
             lbl.config(text=f"{t.name}\nMoney: ${t.money}\nElves: {t.elves}") #as well as here
 
-    def process_turn(self):
+    def process_turn(self) -> None:
         team = self.teams_data[self.current_team_idx]
         try:
             allocations = [int(e.get()) for e in self.elf_entries]
@@ -122,7 +122,7 @@ class ElfGame:
     #SNOW
     #https://www.tutorialspoint.com/article/how-to-clear-tkinter-canvas#:~:text=In%20order%20to%20clear%20a,present%20in%20a%20Tkinter%20frame. 
     #https://stackoverflow.com/questions/45388420/python-3-tkinter-how-to-use-after-on-canvas-graphics 
-    def moveSnow(self):
+    def moveSnow(self) -> None:
         for particile in self.snowList: 
             self.canvas.move(particile, 0, 1) #makes the y coordinate of particle decrease by 1
 
@@ -130,13 +130,13 @@ class ElfGame:
 
         self.root.after(33, self.moveSnow) #async (keeps this function running every .3) but lets the game continue
 
-    def stopSnow(self): #deletes all the snow
+    def stopSnow(self) -> None: #deletes all the snow
         for snow in self.snowList: 
             self.canvas.delete(snow) #deletes the snow from the canvas
         self.snowList.clear() #clears the list
         self.canvas.destroy() #destroys the canvas (the background)
 
-    def makeSnow(self):
+    def makeSnow(self) -> None:
 
         self.canvas = tk.Canvas(self.root, width=700, height=600, bg='Black') #BROKEN ===================================== doesnt fully cover the screen
         self.canvas.pack() #display the canvas
@@ -159,7 +159,7 @@ class ElfGame:
 
 
 
-    def rewards(self, snowStorm: bool=True): #process the money, maybe show a graphic of a snow storm etc so its all together at the end
+    def rewards(self, snowStorm: bool=True) -> None: #process the money, maybe show a graphic of a snow storm etc so its all together at the end
 
         if snowStorm: #only runs if there is a snowstorm
             self.makeSnow()
