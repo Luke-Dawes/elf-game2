@@ -22,7 +22,7 @@ class ElfGame:
         ]
 
         # Team Data: [Money, Total Elves]
-        self.teams_data = [Team(f"Team {i+1}") for i in range(4)]
+        self.teams_data = [Team(f"Team {i+1}") for i in range(4)] #this is now a list of teams
         #self.teams_data = [{"money": 0, "elves": 10, "name": f"Team {i+1}"} for i in range(4)]
         
         self.create_widgets()
@@ -64,12 +64,12 @@ class ElfGame:
 
     def refresh_ui(self):
         team = self.teams_data[self.current_team_idx]
-        self.header_label.config(text=f"Turn {self.current_turn}: {team.name}'s Move")
-        self.team_info_label.config(text=f"Available Elves: {team.elves} | Current Money: ${team.money}")
+        self.header_label.config(text=f"Turn {self.current_turn}: {team.name}'s Move") #instead of using team["name"] its now a class syntax
+        self.team_info_label.config(text=f"Available Elves: {team.elves} | Current Money: ${team.money}") #changed here aswell
         
         for i, lbl in enumerate(self.leaderboard_labels):
             t = self.teams_data[i]
-            lbl.config(text=f"{t.name}\nMoney: ${t.money}\nElves: {t.elves}")
+            lbl.config(text=f"{t.name}\nMoney: ${t.money}\nElves: {t.elves}") #as well as here
 
     def process_turn(self):
         team = self.teams_data[self.current_team_idx]
@@ -81,12 +81,12 @@ class ElfGame:
 
         total_sent = sum(allocations)
         if total_sent > team.elves:
-            messagebox.showwarning("Warning", f"You only have {team.elves} elves!")
+            messagebox.showwarning("Warning", f"You only have {team.elves} elves!") #here
             return
 
         # Calculate Earnings
-        round_income = sum(allocations[i] * self.locations[i]["payout"] for i in range(4))
-        team.money += round_income
+        round_income = sum(allocations[i] * self.locations[i]["payout"] for i in range(4)) #self.locations is still a dictonary
+        team.money += round_income #team.money changed from team["money"]
 
         # Reset entries for next team
         for entry in self.elf_entries:
