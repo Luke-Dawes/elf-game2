@@ -20,9 +20,9 @@ class ElfGame:
         # Location Multipliers (Money earned per elf)
         self.locations = [
             {"name": "Woods", "payout": 10},
-            {"name": "Deep Forest", "payout": 25},
-            {"name": "Mountains", "payout": 50},
-            {"name": "Mystic Cave", "payout": 100}
+            {"name": "Deep Forest", "payout": 25}
+            #{"name": "Mountains", "payout": 50},
+            #{"name": "Mystic Cave", "payout": 100}
         ]
 
         # Team Data: [Money, Total Elves]
@@ -113,6 +113,19 @@ class ElfGame:
             #reset for the next turn
             self.current_team_idx = 0
             self.current_turn += 1
+
+            if self.current_turn == 7:
+                self.locations.append({"name": "Mountains", "payout": 50})
+                self.deleteWidgets()
+                self.create_widgets()
+                self.refresh_ui()
+            
+            elif self.current_turn == 14:
+                self.locations.append({"name": "Volcano", "payout": 100})
+                self.deleteWidgets()
+                self.create_widgets()
+                self.refresh_ui()
+
             messagebox.showinfo("New Round", f"Round {self.current_turn} begins!")
 
         self.refresh_ui()
@@ -151,8 +164,8 @@ class ElfGame:
         self.moveSnow() #call the move snow func once, thought it runs async
 
         self.root.after(4000, self.stopSnow) #after like 3 seconds it calls stop snow which deletes everthting
-        self.root.after(4005, self.create_widgets)
-        self.root.after(4006, self.refresh_ui)
+        self.root.after(4005, self.create_widgets) #create the widgets again which have been deleted
+        self.root.after(4006, self.refresh_ui) #refresh them so they contain the correct data
         
 
     def deleteWidgets(self):
@@ -163,11 +176,10 @@ class ElfGame:
 
 
 
-    def rewards(self, snowStorm: bool=True) -> None: #process the money, maybe show a graphic of a snow storm etc so its all together at the end
-
-        self.deleteWidgets()
+    def rewards(self, snowStorm: bool=False) -> None: #process the money, maybe show a graphic of a snow storm etc so its all together at the end
 
         if snowStorm: #only runs if there is a snowstorm
+            self.deleteWidgets() 
             self.makeSnow()
 
         for team in self.teams_data: #for each team
