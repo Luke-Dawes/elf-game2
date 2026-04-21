@@ -37,8 +37,8 @@ class ElfGame:
         self.create_widgets()
         self.refresh_ui()
 
-    def createTeamsSeperate(self): #added func to add a name
-        for i in range(4):
+    def createTeams(self): #added func to add a name
+        for i in range(1,5):
             while True: #handle for None 
                 temp = simpledialog.askstring("Name", f"What is the name of team {i}") 
                 if temp:
