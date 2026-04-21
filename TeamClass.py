@@ -4,5 +4,6 @@ class Team:
         self.name = name
         self.elves = 12
         self.money = 500
-        self.motivation = 0 #maybe?
+        self.motivation = 1 #maybe?
         self.sentElves = {}
+        self.payed = 0

@@ -15,6 +15,7 @@ class ElfGame:
         self.num_teams = 4
 
         self.waitingForName = tk.BooleanVar(value=False)
+        self.payedToElves = 0
 
         #snow
         self.snowList = []
@@ -93,6 +94,11 @@ class ElfGame:
             entry.grid(row=i, column=1, padx=10)
             self.elf_entries.append(entry)
 
+        tk.Label(self.input_frame, text="Pay Elves (£)").grid(row=5, column=0, sticky='w',pady=5)
+        self.payEntry = tk.Entry(self.input_frame, width=10)
+        self.payEntry.insert(0, "0")
+        self.payEntry.grid(row=5, column=1, padx=10)
+
         # Submit Button
         self.submit_btn = tk.Button(self.root, text="Confirm Turn", command=self.process_turn, bg="green", fg="white", font=("Arial", 12, "bold"))
         self.submit_btn.pack(pady=10)
@@ -114,14 +120,19 @@ class ElfGame:
         
         for i, lbl in enumerate(self.leaderboard_labels):
             t = self.teams_data[i]
-            lbl.config(text=f"{t.name}\nMoney: £{t.money}\nElves: {t.elves}") #as well as here
+            lbl.config(text=f"{t.name}\nMoney: £{t.money}\nElves: {t.elves}\nElf Motivation: {t.motivation * 50}%") #as well as here
 
     def process_turn(self) -> None:
         team = self.teams_data[self.current_team_idx]
         try:
             allocations = [int(e.get()) for e in self.elf_entries]
+            paying = int(self.payEntry.get())
         except ValueError:
             messagebox.showerror("Error", "Please enter valid numbers.")
+            return
+
+        if paying > team.money:
+            messagebox.showwarning("Warning", "Not enough money to pay elves!")
             return
 
         total_sent = sum(allocations)
@@ -135,6 +146,9 @@ class ElfGame:
             for i in range(len(self.locations))
         }
 
+        team.payed = paying
+        
+
         #!delayed this untill the end so it calculates it all together  
         #round_income = sum(allocations[i] * self.locations[i]["payout"] for i in range(4)) #self.locations is still a dictonary
         #team.money += round_income #team.money changed from team["money"]
@@ -144,11 +158,20 @@ class ElfGame:
             entry.delete(0, tk.END)
             entry.insert(0, "0")
 
+        self.payEntry.delete(0, tk.END)
+        self.payEntry.insert(0, "0")
+        
+
         # Move to next team or next turn
         self.current_team_idx += 1
         if self.current_team_idx >= self.num_teams:
 
             #show rewards 
+            
+            for team in self.teams_data:
+                team.money -= team.payed
+                team.motivation += team.payed * 0.0005
+
             self.rewards()
 
             #reset for the next turn
@@ -209,7 +232,7 @@ class ElfGame:
             widget.destroy()
 
 
-    def rewards(self, snowStorm: bool=False) -> None: #process the money, maybe show a graphic of a snow storm etc so its all together at the end
+    def rewards(self, snowStorm: bool=True) -> None: #process the money, maybe show a graphic of a snow storm etc so its all together at the end
 
         if snowStorm: #only runs if there is a snowstorm
             self.deleteWidgets() 
@@ -227,7 +250,7 @@ class ElfGame:
 
                 elvesSent = team.sentElves.get(location) #get how many elves sent to each location
 
-                if snowStorm and location == "Deep Forrest":
+                if snowStorm and location == "Deep Forest":
                     tempInc += 0
 
                 elif snowStorm and location == "Mountains":
@@ -255,6 +278,14 @@ class ElfGame:
 
             
             team.money += totalInc
+
+            if team.motivation >= 2:
+                valueFromMotivation = max(1, min(team.motivation, 5))
+                percent = valueFromMotivation * 0.1
+                team.money += team.money * percent
+
+                rewardMessage += f"☆☆ {team.name} earned £{team.money * percent} via extra work from their elves ☆☆"
+
             rewardMessage += "\n"
         
         messagebox.showinfo("rewards", rewardMessage)
