@@ -87,7 +87,7 @@ class ElfGame:
 
         self.elf_entries = []
         for i, loc in enumerate(self.locations):
-            tk.Label(self.input_frame, text=f"{loc['name']} (${loc['payout']}/elf):").grid(row=i, column=0, sticky="w", pady=5)
+            tk.Label(self.input_frame, text=f"{loc['name']} (£{loc['payout']}/elf):").grid(row=i, column=0, sticky="w", pady=5)
             entry = tk.Entry(self.input_frame, width=10)
             entry.insert(0, "0")
             entry.grid(row=i, column=1, padx=10)
@@ -110,11 +110,11 @@ class ElfGame:
     def refresh_ui(self) -> None:
         team = self.teams_data[self.current_team_idx]
         self.header_label.config(text=f"Turn {self.current_turn}: {team.name}'s Move") #instead of using team["name"] its now a class syntax
-        self.team_info_label.config(text=f"Available Elves: {team.elves} | Current Money: ${team.money}") #changed here aswell
+        self.team_info_label.config(text=f"Available Elves: {team.elves} | Current Money: £{team.money}") #changed here aswell
         
         for i, lbl in enumerate(self.leaderboard_labels):
             t = self.teams_data[i]
-            lbl.config(text=f"{t.name}\nMoney: ${t.money}\nElves: {t.elves}") #as well as here
+            lbl.config(text=f"{t.name}\nMoney: £{t.money}\nElves: {t.elves}") #as well as here
 
     def process_turn(self) -> None:
         team = self.teams_data[self.current_team_idx]
@@ -166,9 +166,6 @@ class ElfGame:
                 self.deleteWidgets()
                 self.create_widgets()
                 
-
-            messagebox.showinfo("New Round", f"Round {self.current_turn} begins!")
-
         self.refresh_ui()
 
 
@@ -218,30 +215,49 @@ class ElfGame:
             self.deleteWidgets() 
             self.makeSnow()
 
+        rewardMessage = ""
+
         for team in self.teams_data: #for each team
             totalInc = 0
 
             for loc in self.locations: #get the name and the amount of money
+                tempInc = 0
                 location = loc["name"]
                 reward = loc["payout"]
 
                 elvesSent = team.sentElves.get(location) #get how many elves sent to each location
 
                 if snowStorm and location == "Deep Forrest":
-                    totalInc += 0
+                    tempInc += 0
 
                 elif snowStorm and location == "Mountains":
-                    totalInc += 0
+                    tempInc += 0
                     team.elves -= elvesSent
 
                 elif not snowStorm and location == "Volcano":
                     team.elves -= elvesSent
-                    totalInc += 0
+                    tempInc += 0
 
                 else:
-                    totalInc += elvesSent * reward
+                    tempInc += elvesSent * reward
+                
+                if loc == "Mountains" and snowStorm:
+                    rewardMessage += f"☆ {team.name} sent {elvesSent} to {location} and lost all of them! ☆ \n"
+
+                elif loc == "Volcano" and not snowStorm:
+                    rewardMessage += f"☆ {team.name} sent {elvesSent} to {location} and lost all of them! ☆ \n"
+
+                else:
+                    rewardMessage += f"☆ {team.name} sent {elvesSent} to {location} and earned £{tempInc} ☆ \n"
+                
+                totalInc += tempInc
+                
+
             
             team.money += totalInc
+            rewardMessage += "\n"
+        
+        messagebox.showinfo("rewards", rewardMessage)
 
 
 
