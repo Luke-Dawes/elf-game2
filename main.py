@@ -30,18 +30,27 @@ class ElfGame:
         #self.teams_data = [{"money": 0, "elves": 10, "name": f"Team {i+1}"} for i in range(4)]
         self.teams_data = []
         
-        self.createTeams()
+        while not self.createTeams():
+            continue
+        self.createTeamsSeperate()
 
         self.create_widgets()
         self.refresh_ui()
 
-    def createTeams(self): #added func to add a name
+    def createTeamsSeperate(self): #added func to add a name
         for i in range(4):
             while True: #handle for None 
                 temp = simpledialog.askstring("Name", f"What is the name of team {i}") 
                 if temp:
                     break
             self.teams_data.append(Team(temp))
+
+    def createTeams(self) -> bool:
+        words = tk.LabelFrame(self.root, text="team1", font=("arial", 12))
+        words.pack()
+        name = tk.Entry(words, width=10)
+        #finish this 
+        return False
 
 
     def create_widgets(self) -> None:
@@ -147,9 +156,7 @@ class ElfGame:
     def moveSnow(self) -> None:
         for particile in self.snowList: 
             self.canvas.move(particile, 0, 1) #makes the y coordinate of particle decrease by 1
-
-            #x1, y1, x2, y2 = self.canvas.coords(particile)
-
+            
         self.root.after(33, self.moveSnow) #async (keeps this function running every .3) but lets the game continue
 
     def stopSnow(self) -> None: #deletes all the snow
@@ -206,6 +213,10 @@ class ElfGame:
                 elif snowStorm and location == "Mountains":
                     totalInc += 0
                     team.elves -= elvesSent
+
+                elif not snowStorm and location == "Volcano":
+                    team.elves -= elvesSent
+                    totalInc += 0
 
                 else:
                     totalInc += elvesSent * reward
