@@ -1,12 +1,30 @@
 import tkinter as tk
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox
 from TeamClass import Team
 import random
+
+
+"""
+left to do for the base game:
+    information when you start the game explaning everything
+    weather in the main loop
+    shop
+    some end to the game
+    random events i.e. random elves moving
+
+ideas left to do:
+    map/background image when looking if its a snowstorm or not? 
+    screenshake creating anticipation for if its a snowstorm or not
+    taxes?
+    comback mechanics - however might not be as clear as whos going to win bc motivation
+
+"""
+
 
 class ElfGame:
     def __init__(self, root):
         self.root = root
-        self.root.title("Elf Resource Manager - Turn Based")
+        self.root.title("Elf Game 2")
         self.root.geometry("700x600")
 
         # Game State
@@ -282,9 +300,9 @@ class ElfGame:
             if team.motivation >= 2:
                 valueFromMotivation = max(1, min(team.motivation, 5))
                 percent = valueFromMotivation * 0.1
-                team.money += team.money * percent
+                team.money += int(team.money * percent)
 
-                rewardMessage += f"☆☆ {team.name} earned £{team.money * percent} via extra work from their elves ☆☆"
+                rewardMessage += f"☆☆ {team.name} earned £{int(team.money * percent)} via extra work from their elves ☆☆"
 
             rewardMessage += "\n"
         
