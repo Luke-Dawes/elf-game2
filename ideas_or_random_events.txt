@@ -1,10 +1,5 @@
 import random
 
-#already addded to the game but can be removed
-"""
-you decide how much you pay the elves, and if you pay them enough they will give you a % of your earnings back
-(evlesPayBack function. The function isnt actually called (the maths is just in the main file), but the idea is here
-"""
 
 
 def tax(teams): #hurt the teams at the top more
