@@ -11,7 +11,7 @@ class Day:
         self.weathers = [ #weather, probability of blizzard and prompt to be displayed
             {"name": "promising", "probability": 0.2, "prompt": "The weather is looking promising!"},
             {"name": "okay", "probability": 0.25, "prompt": "The weather is looking okay."},
-            {"name": "hopeful", "probability": 0.15, "prompt": "The weather is looking hopeful."},
+            {"name": "hopeful", "probability": 0.0001, "prompt": "The weather is looking hopeful."},
             {"name": "dreary", "probability": 0.55, "prompt": "The weather is looking dreary..."},
             {"name": "mixed", "probability": 0.5, "prompt": "The weather is looking mixed."},
             {"name": "uncertain", "probability": 0.5, "prompt": "The weather is looking uncertain..."},
@@ -19,7 +19,10 @@ class Day:
         ]
     
     def probabilityGenerator(self, chance):
-        return (random.random() < chance)
+        print(f"Chance of success is: {chance}")
+        test = random.random()
+        print(test)
+        return (test < chance)
         
 
     def selectNewWeather(self): #just chooses a random weather
@@ -43,7 +46,7 @@ class Day:
         if self.lastBlizzard: self.concurrentSun = 0
         else: self.concurrentSun += 1 
 
-        chance += (self.concurrentSun * 0.1)
+        chance += ((self.concurrentSun - 1) * 0.1)
         if chance > 0.9: chance = 0.9
 
         return self.probabilityGenerator(chance=chance)

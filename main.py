@@ -199,7 +199,6 @@ class ElfGame:
         print(self.day.currentWeather)
 
         if self.current_team_idx >= self.num_teams:
-
             self.day.incrementDay()  # increment day for each new turn
 
             #show rewards 
@@ -244,6 +243,7 @@ class ElfGame:
     def makeSnow(self) -> None:
 
         self.canvas = tk.Canvas(self.root, width=700, height=600, bg='Black') 
+        self.canvas.config(width=1920,height=1080)
         self.canvas.pack() #display the canvas
 
         self.snowList = []
@@ -273,6 +273,7 @@ class ElfGame:
         if snowStorm: #only runs if there is a snowstorm
             self.deleteWidgets() 
             self.makeSnow()
+            self.day.lastBlizzard = True #resets luck meter
 
         rewardMessage = ""
 
