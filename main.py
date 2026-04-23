@@ -10,13 +10,13 @@ from Weather import Day
 """
 left to do for the base game:
     information when you start the game explaining everything
-    weather in the main loop
+    weather in the main loop                                            -- added processing of weather 
     shop
     some end to the game
     random events i.e. random elves moving
 
 ideas left to do:
-    map/background image when looking if its a snowstorm or not? 
+    map/background image when looking if its a snowstorm or not?                --good plan how to implement though?
     screen-shake creating anticipation for if its a snowstorm or not
     taxes?
     come-back mechanics - however might not be as clear as who's going to win bc motivation
@@ -126,6 +126,13 @@ class ElfGame:
         self.submit_btn = tk.Button(self.root, text="Confirm Turn", command=self.process_turn, bg="green", fg="white", font=("Arial", 12, "bold"))
         self.submit_btn.pack(pady=10)
 
+        # Weather
+        self.weather_display = tk.LabelFrame(self.root, text= "Weather", padx=10, pady=10)
+        self.weather_display.pack(fill="both", padx=20, pady=20)
+
+        self.weather_prompt = tk.Label(self.weather_display, text=self.day.currentWeather["prompt"])
+        self.weather_prompt.pack(fill="both")
+
         # Leaderboard
         self.leaderboard_frame = tk.LabelFrame(self.root, text="Leaderboard", padx=10, pady=10)
         self.leaderboard_frame.pack(side="bottom", fill="x", padx=20, pady=20)
@@ -141,6 +148,8 @@ class ElfGame:
         self.header_label.config(text=f"Turn {self.current_turn}: {team.name}'s Move") #instead of using team["name"] it's now a class syntax
         self.team_info_label.config(text=f"Available Elves: {team.elves} | Current Money: £{team.money}") #changed here as well
         
+        self.weather_display.config(text="Weather")
+
         for i, lbl in enumerate(self.leaderboard_labels):
             t = self.teams_data[i]
             lbl.config(text=f"{t.name}\nMoney: £{t.money}\nElves: {t.elves}\nElf Motivation: {t.motivation * 50}%") #as well as here
@@ -199,7 +208,7 @@ class ElfGame:
                 team.money -= team.payed
                 team.motivation += team.payed * 0.0005
 
-            self.rewards()
+            self.rewards(self.day.determineBlizzard())
 
             #reset for the next turn
             self.current_team_idx = 0
