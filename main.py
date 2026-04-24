@@ -42,6 +42,7 @@ class ElfGame:
 
         #snow
         self.snowList = []
+        self.isBlizzardDone = tk.BooleanVar(value=False)
         
         # Location Multipliers (Money earned per elf)
         self.locations = [
@@ -270,6 +271,7 @@ class ElfGame:
         self.root.after(4000, self.stopSnow) #after like 3 seconds it calls stop snow which deletes everything
         self.root.after(4005, self.create_widgets) #create the widgets again which have been deleted
         self.root.after(4020, self.refresh_ui) #refresh them so they contain the correct data
+        self.isBlizzardDone = True
         
 
     def deleteWidgets(self):
@@ -283,6 +285,7 @@ class ElfGame:
             self.deleteWidgets() 
             self.makeSnow()
             self.day.lastBlizzard = True #resets luck meter
+            self.isBlizzardDone = False
 
         rewardMessage = ""
 
@@ -335,6 +338,7 @@ class ElfGame:
             rewardMessage += "\n"
         
         messagebox.showinfo("rewards", rewardMessage)
+        self.root.wait_variable(self.isBlizzardDone)
 
 
 
