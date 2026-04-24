@@ -229,6 +229,8 @@ class ElfGame:
             self.weather_prompt = tk.Label(self.weather_display, text=self.day.currentWeather["prompt"]) #removing destroy just adds new labels
             self.weather_prompt.pack(fill="both")
 
+            
+
             if self.current_turn == 7:
                 self.locations.append({"name": "Mountains", "payout": 50})
                 self.deleteWidgets()
@@ -239,10 +241,15 @@ class ElfGame:
                 self.locations.append({"name": "Volcano", "payout": 100})
                 self.deleteWidgets()
                 self.create_widgets()
+
                 
         self.refresh_ui()
 
     #SNOW
+
+    def blizzard_done(self):
+        self.isBlizzardDone.set(True)
+
     def moveSnow(self) -> None:
         for particle in self.snowList:
             self.canvas.move(particle, 0, 1) #makes the y coordinate of particle decrease by 1
@@ -254,7 +261,6 @@ class ElfGame:
             self.canvas.delete(snow) #deletes the snow from the canvas
         self.snowList.clear() #clears the list
         self.canvas.destroy() #destroys the canvas (the background)
-        self.isBlizzardDone.set(True)
 
     def makeSnow(self) -> None:
 
@@ -275,8 +281,9 @@ class ElfGame:
         self.moveSnow() #call the move snow func once, thought it runs async
 
         self.root.after(4000, self.stopSnow) #after like 3 seconds it calls stop snow which deletes everything
-        self.root.after(4005, self.create_widgets) #create the widgets again which have been deleted
-        self.root.after(4020, self.refresh_ui) #refresh them so they contain the correct data
+        #self.root.after(4005, self.create_widgets) #create the widgets again which have been deleted
+        #self.root.after(4020, self.refresh_ui) #refresh them so they contain the correct data
+        self.root.after(4030, self.blizzard_done)
         
         
 
@@ -287,11 +294,15 @@ class ElfGame:
 
     def rewards(self, snowStorm: bool) -> None: #process the money, maybe show a graphic of a snow storm etc. so it's all together at the end
 
+        #snowStorm = True if self.current_turn == 7 else False
+
         if snowStorm: #only runs if there is a snowstorm
             self.isBlizzardDone.set(False)
             self.deleteWidgets() 
             self.makeSnow()
             self.day.lastBlizzard = True #resets luck meter
+            self.create_widgets()
+            self.refresh_ui()
             
 
         rewardMessage = ""
