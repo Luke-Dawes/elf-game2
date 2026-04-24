@@ -217,6 +217,11 @@ class ElfGame:
 
             self.day.incrementDay()  # increment day for each new turn
 
+
+            self.weather_prompt.destroy() #weather wasnt updating unless its destroyed and remade
+            self.weather_prompt = tk.Label(self.weather_display, text=self.day.currentWeather["prompt"]) #removing destroy just adds new labels
+            self.weather_prompt.pack(fill="both")
+
             if self.current_turn == 7:
                 self.locations.append({"name": "Mountains", "payout": 50})
                 self.deleteWidgets()
@@ -264,7 +269,7 @@ class ElfGame:
 
         self.root.after(4000, self.stopSnow) #after like 3 seconds it calls stop snow which deletes everything
         self.root.after(4005, self.create_widgets) #create the widgets again which have been deleted
-        self.root.after(4006, self.refresh_ui) #refresh them so they contain the correct data
+        self.root.after(4020, self.refresh_ui) #refresh them so they contain the correct data
         
 
     def deleteWidgets(self):
