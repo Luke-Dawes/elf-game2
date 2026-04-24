@@ -1,22 +1,25 @@
 import tkinter as tk
+import random
+
 from tkinter import messagebox
 from TeamClass import Team
-import random
+from Weather import Day
+
 
 
 """
 left to do for the base game:
-    information when you start the game explaning everything
-    weather in the main loop
+    information when you start the game explaining everything
+    weather in the main loop                                            -- added processing of weather 
     shop
     some end to the game
     random events i.e. random elves moving
 
 ideas left to do:
-    map/background image when looking if its a snowstorm or not? 
-    screenshake creating anticipation for if its a snowstorm or not
+    map/background image when looking if its a snowstorm or not?                --good plan how to implement though?
+    screen-shake creating anticipation for if its a snowstorm or not
     taxes?
-    comback mechanics - however might not be as clear as whos going to win bc motivation
+    come-back mechanics - however might not be as clear as who's going to win bc motivation
 
 """
 
@@ -34,6 +37,8 @@ class ElfGame:
 
         self.waitingForName = tk.BooleanVar(value=False)
         self.payedToElves = 0
+        self.day = Day()
+        self.day.incrementDay()
 
         #snow
         self.snowList = []
@@ -52,7 +57,7 @@ class ElfGame:
         self.teams_data = []
         
         self.createTeams()
-        self.root.wait_variable(self.waitingForName) #a hold vairable so tkinter runs and allows input
+        self.root.wait_variable(self.waitingForName) #a hold variable so tkinter runs and allows input
 
         self.create_widgets()
         self.refresh_ui()
@@ -68,15 +73,15 @@ class ElfGame:
     def createTeams(self): #code from website
         self.frame = tk.Frame(self.root) #get the frame
         self.frame.pack(pady=50) #add it to the screen
-        tk.Label(self.frame, text="Enter Team Names", font=("Arial", 14, "bold")).pack(pady=10) #add a lavel for a title
+        tk.Label(self.frame, text="Enter Team Names", font=("Arial", 14, "bold")).pack(pady=10) #add a label for a title
         self.names = [] #add temp names
 
         for i in range(4): #4
-            f = tk.Frame(self.frame) #i guess we assign self.frame to f
+            f = tk.Frame(self.frame) #I guess we assign self.frame to f
             f.pack() #pack it?
             tk.Label(f, text=f"Team {i+1}:").pack(side="left") 
             ent = tk.Entry(f) #input
-            ent.insert(0, f"Team {i+1}") #whats in the box
+            ent.insert(0, f"Team {i+1}") #what's in the box
             ent.pack(side="left", padx=5)
             self.names.append(ent) #add it to the thing
         btn = tk.Button(self.frame, text="Start Game", command=self.saveTeamsAndStart) #on press run saveTeamsAndStart
@@ -84,7 +89,7 @@ class ElfGame:
 
     def saveTeamsAndStart(self):
         for name in self.names:
-            teamName = name.get().strip() or "unknwon"
+            teamName = name.get().strip() or "unknown"
             self.teams_data.append(Team(teamName))
         
         self.frame.destroy()
@@ -121,6 +126,13 @@ class ElfGame:
         self.submit_btn = tk.Button(self.root, text="Confirm Turn", command=self.process_turn, bg="green", fg="white", font=("Arial", 12, "bold"))
         self.submit_btn.pack(pady=10)
 
+        # Weather
+        self.weather_display = tk.LabelFrame(self.root, text= "Weather", padx=10, pady=10)
+        self.weather_display.pack(fill="both", padx=20, pady=20)
+
+        self.weather_prompt = tk.Label(self.weather_display, text=self.day.currentWeather["prompt"])
+        self.weather_prompt.pack(fill="both")
+
         # Leaderboard
         self.leaderboard_frame = tk.LabelFrame(self.root, text="Leaderboard", padx=10, pady=10)
         self.leaderboard_frame.pack(side="bottom", fill="x", padx=20, pady=20)
@@ -132,10 +144,12 @@ class ElfGame:
             self.leaderboard_labels.append(lbl)
 
     def refresh_ui(self) -> None:
-        team = self.teams_data[self.current_team_idx]
-        self.header_label.config(text=f"Turn {self.current_turn}: {team.name}'s Move") #instead of using team["name"] its now a class syntax
-        self.team_info_label.config(text=f"Available Elves: {team.elves} | Current Money: £{team.money}") #changed here aswell
+        if self.current_team_idx <= self.num_teams:   team = self.teams_data[self.current_team_idx]
+        self.header_label.config(text=f"Turn {self.current_turn}: {team.name}'s Move") #instead of using team["name"] it's now a class syntax
+        self.team_info_label.config(text=f"Available Elves: {team.elves} | Current Money: £{team.money}") #changed here as well
         
+        self.weather_display.config(text="Weather")
+
         for i, lbl in enumerate(self.leaderboard_labels):
             t = self.teams_data[i]
             lbl.config(text=f"{t.name}\nMoney: £{t.money}\nElves: {t.elves}\nElf Motivation: {t.motivation * 50}%") #as well as here
@@ -167,8 +181,8 @@ class ElfGame:
         team.payed = paying
         
 
-        #!delayed this untill the end so it calculates it all together  
-        #round_income = sum(allocations[i] * self.locations[i]["payout"] for i in range(4)) #self.locations is still a dictonary
+        #!delayed this until the end so it calculates it all together
+        #round_income = sum(allocations[i] * self.locations[i]["payout"] for i in range(4)) #self.locations is still a dictionary
         #team.money += round_income #team.money changed from team["money"]
 
         # Reset entries for next team
@@ -182,7 +196,10 @@ class ElfGame:
 
         # Move to next team or next turn
         self.current_team_idx += 1
+        print(self.day.currentWeather)
+
         if self.current_team_idx >= self.num_teams:
+            
 
             #show rewards 
             
@@ -190,11 +207,20 @@ class ElfGame:
                 team.money -= team.payed
                 team.motivation += team.payed * 0.0005
 
-            self.rewards()
+            
 
             #reset for the next turn
             self.current_team_idx = 0
             self.current_turn += 1
+
+            self.rewards(self.day.determineBlizzard())
+
+            self.day.incrementDay()  # increment day for each new turn
+
+
+            self.weather_prompt.destroy() #weather wasnt updating unless its destroyed and remade
+            self.weather_prompt = tk.Label(self.weather_display, text=self.day.currentWeather["prompt"]) #removing destroy just adds new labels
+            self.weather_prompt.pack(fill="both")
 
             if self.current_turn == 7:
                 self.locations.append({"name": "Mountains", "payout": 50})
@@ -212,8 +238,8 @@ class ElfGame:
 
     #SNOW
     def moveSnow(self) -> None:
-        for particile in self.snowList: 
-            self.canvas.move(particile, 0, 1) #makes the y coordinate of particle decrease by 1
+        for particle in self.snowList:
+            self.canvas.move(particle, 0, 1) #makes the y coordinate of particle decrease by 1
             
         self.root.after(33, self.moveSnow) #async (keeps this function running every .3) but lets the game continue
 
@@ -226,6 +252,7 @@ class ElfGame:
     def makeSnow(self) -> None:
 
         self.canvas = tk.Canvas(self.root, width=700, height=600, bg='Black') 
+        self.canvas.config(width=1920,height=1080)
         self.canvas.pack() #display the canvas
 
         self.snowList = []
@@ -240,9 +267,9 @@ class ElfGame:
         
         self.moveSnow() #call the move snow func once, thought it runs async
 
-        self.root.after(4000, self.stopSnow) #after like 3 seconds it calls stop snow which deletes everthting
+        self.root.after(4000, self.stopSnow) #after like 3 seconds it calls stop snow which deletes everything
         self.root.after(4005, self.create_widgets) #create the widgets again which have been deleted
-        self.root.after(4006, self.refresh_ui) #refresh them so they contain the correct data
+        self.root.after(4020, self.refresh_ui) #refresh them so they contain the correct data
         
 
     def deleteWidgets(self):
@@ -250,11 +277,12 @@ class ElfGame:
             widget.destroy()
 
 
-    def rewards(self, snowStorm: bool=True) -> None: #process the money, maybe show a graphic of a snow storm etc so its all together at the end
+    def rewards(self, snowStorm: bool=True) -> None: #process the money, maybe show a graphic of a snow storm etc. so it's all together at the end
 
         if snowStorm: #only runs if there is a snowstorm
             self.deleteWidgets() 
             self.makeSnow()
+            self.day.lastBlizzard = True #resets luck meter
 
         rewardMessage = ""
 
@@ -307,11 +335,6 @@ class ElfGame:
             rewardMessage += "\n"
         
         messagebox.showinfo("rewards", rewardMessage)
-
-
-
-
-
 
 
 
