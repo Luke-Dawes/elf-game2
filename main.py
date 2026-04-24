@@ -356,6 +356,7 @@ class ElfGame:
             rewardMessage += "\n"
         
         messagebox.showinfo("rewards", rewardMessage)
+        self.refresh_ui()
         
 
 
