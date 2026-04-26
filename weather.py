@@ -2,6 +2,9 @@ import random
 
 class Day:
     def __init__(self):
+
+        # ==WEATHER== 
+
         self.current_day = 0
         self.last_weather = None
         self.minimum_days = {}  # min days for each location
@@ -17,6 +20,16 @@ class Day:
             {"name": "uncertain", "probability": 0.5, "prompt": "The weather is looking uncertain..."},
             {"name": "treacherous", "probability": 0.75, "prompt": "The weather is looking treacherous..."}
         ]
+
+        # ==EVENTS==
+
+        self.days_since_event = 0
+        self.events = [
+            {"name": , "prompt": ,}
+        ]
+
+
+
     
     def probability_generator(self, chance):
         print(f"Chance of success is: {chance}")
@@ -53,6 +66,11 @@ class Day:
         if chance > 0.9: chance = 0.9
 
         return self.probability_generator(chance=chance)
+    
+def calculate_shop_chance():
+    pass
+
+
 
 
     
