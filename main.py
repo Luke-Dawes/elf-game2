@@ -168,9 +168,6 @@ class ElfGame:
             print(self.valuesInDrop)
             drop.config(values = self.valuesInDrop)    
             
-
-
-
     def refresh_ui(self) -> None:
         if self.current_team_idx <= self.num_teams:   team = self.teams_data[self.current_team_idx]
 
