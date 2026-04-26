@@ -1,6 +1,8 @@
 import tkinter as tk
 
 from tkinter import messagebox
+from tkinter import ttk
+
 from team import Team
 from weather import Day
 from animation import SnowAnimation
@@ -25,6 +27,7 @@ ideas left to do:
 
 class ElfGame:
     def __init__(self, root):
+        self.setup_elves_flag = False
         self.root = root
         self.root.title("Elf Game 2")
         self.root.geometry("700x600")
@@ -111,13 +114,15 @@ class ElfGame:
         self.elf_entries = []
         for i, loc in enumerate(self.locations):
             tk.Label(self.input_frame, text=f"{loc['name']} (£{loc['payout']}/elf):").grid(row=i, column=0, sticky="w", pady=5)
-            entry = tk.Entry(self.input_frame, width=10)
-            entry.insert(0, "0")
+            self.current_elves = tk.IntVar(self.root)
+            entry = ttk.Combobox(self.input_frame, width=10, textvariable=self.current_elves)
+            #entry.insert(0, "0")
             entry.grid(row=i, column=1, padx=10)
+            entry.bind("<FocusIn>", self.update_remaining_elves_event)
             self.elf_entries.append(entry)
 
         tk.Label(self.input_frame, text="Pay Elves (£)").grid(row=5, column=0, sticky='w',pady=5)
-        self.pay_entry = tk.Entry(self.input_frame, width=10)
+        self.pay_entry = tk.Entry(master= self.input_frame, width=10,)
         self.pay_entry.insert(0, "0")
         self.pay_entry.grid(row=5, column=1, padx=10)
 
@@ -142,11 +147,40 @@ class ElfGame:
             lbl.pack(side="left", expand=True)
             self.leaderboard_labels.append(lbl)
 
+
+    def update_remaining_elves_event(self,event):
+        self.update_remaining_elves()
+
+    def update_remaining_elves(self):
+        team = self.teams_data[self.current_team_idx]
+        elves_left = team.elves
+        for entries in self.elf_entries:
+            if not self.setup_elves_flag: 
+                entries.current(0)
+                self.setup_elves_flag = True
+            current_input = int(entries.get())
+            elves_left -= current_input
+            self.setup_elf_options(elves_left, current_input)
+
+    def setup_elf_options(self,elves_left,current_input):
+        for i, drop in enumerate(self.elf_entries):
+            self.valuesInDrop = [elves for elves in range(0,elves_left+current_input+1)]
+            print(self.valuesInDrop)
+            drop.config(values = self.valuesInDrop)    
+            
+
+
+
     def refresh_ui(self) -> None:
         if self.current_team_idx <= self.num_teams:   team = self.teams_data[self.current_team_idx]
+
         self.header_label.config(text=f"Turn {self.current_turn}: {team.name}'s Move") #instead of using team["name"] it's now a class syntax
         self.team_info_label.config(text=f"Available Elves: {team.elves} | Current Money: £{team.money}") #changed here as well
-        
+
+
+        self.setup_elf_options(team.elves, 0) 
+        self.update_remaining_elves()
+
         self.weather_display.config(text="Weather")
 
         for i, lbl in enumerate(self.leaderboard_labels):
