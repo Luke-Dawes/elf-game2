@@ -89,17 +89,7 @@ class ElfGame:
         btn = tk.Button(self.frame, text="Start Game", command=self.save_teams_and_start) #on press run saveTeamsAndStart
         btn.pack(pady=20)
 
-    def day7(self):
-        if self.current_turn == 7:
-            self.locations.append({"name": "Mountains", "payout": 50})
-            self.delete_widgets()
-            self.create_widgets()
-
-    def day14(self):
-        if self.current_turn == 14:
-            self.locations.append({"name": "Volcano", "payout": 100})
-            self.delete_widgets() 
-            self.create_widgets()
+        
 
     def save_teams_and_start(self):
         for name in self.names:
@@ -345,9 +335,13 @@ class ElfGame:
         self.day.increment_day()  # increment day for each new turn
 
         if self.current_turn == 7:
-            self.day7()
+            self.locations.append({"name": "Mountains", "payout": 50})
+            self.delete_widgets()
+            self.create_widgets()
         if self.current_turn == 14:
-            self.day14()
+            self.locations.append({"name": "Volcano", "payout": 100})
+            self.delete_widgets() 
+            self.create_widgets()
         
         self.weather_prompt.destroy() #weather wasnt updating unless its destroyed and remade
         self.weather_prompt = tk.Label(self.weather_display, text=self.day.current_weather["prompt"]) #removing destroy just adds new labels
