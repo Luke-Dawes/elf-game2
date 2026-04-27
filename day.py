@@ -14,10 +14,10 @@ class Day:
         self.weathers = [  # weather, probability of blizzard and prompt to be displayed
             {"name": "promising", "probability": 0.2, "prompt": "The weather is looking promising!"},
             {"name": "okay", "probability": 0.25, "prompt": "The weather is looking okay."},
-            {"name": "hopeful", "probability": 0.0001, "prompt": "The weather is looking hopeful."},
-            {"name": "dreary", "probability": 0.55, "prompt": "The weather is looking dreary..."},
+            {"name": "hopeful", "probability": 0.15, "prompt": "The weather is looking hopeful."},
+            {"name": "dreary", "probability": 0.65, "prompt": "The weather is looking dreary..."},
             {"name": "mixed", "probability": 0.5, "prompt": "The weather is looking mixed."},
-            {"name": "uncertain", "probability": 0.5, "prompt": "The weather is looking uncertain..."},
+            {"name": "uncertain", "probability": 0.65, "prompt": "The weather is looking uncertain..."},
             {"name": "treacherous", "probability": 0.75, "prompt": "The weather is looking treacherous..."}
         ]
 
@@ -25,13 +25,14 @@ class Day:
 
         self.days_since_event = 0
         self.events = [
-            {"name": "Elf Workshop" , "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy?"},
-            {"name": "Elf Strike" , "prompt": " ☆ The elves have decided to go on strike ☆ "}, #add label new line stating who this has affected
-            {"name": "Mysterious Stranger", "prompt": "☆"}
+            {"name": "Elf Workshop" , "probability": 0.2, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy?"},
+            {"name": "Mysterious Stranger", "probability": 0.2, "prompt": "☆ A mysterious stranger has appeared at the factory... ☆"},
+            {"name": "Elf Migration", "probability": 0.2, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
+            {"name": "Elf Strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
         ]
+        self.current_event = None
 
-
-
+        # ==METHODS==
     
     def probability_generator(self, chance):
         print(f"Chance of success is: {chance}")
@@ -48,15 +49,7 @@ class Day:
         self.select_new_weather()
 
     def determine_blizzard(self):  # logic function determining weather outcome
-        """
-        check last weather
-        determine if series of luck or unlucky
-        tweak result probability
-        increase until ie 90% blizzard chance if example 14 non in a row
-        return outcome dependent on blizzard or not - blizzard = true, non = false
-        """
 
-        print(self.current_weather["name"], "is chosen")
         chance = self.current_weather["probability"]
         
         if self.last_blizzard:
@@ -69,8 +62,15 @@ class Day:
 
         return self.probability_generator(chance=chance)
     
-def calculate_shop_chance():
-    pass
+    def calculate_event_chance(self):
+        pass
+
+    def select_new_event(self):
+        for event in self.events:
+            if self.probability_generator(event["probability"]):
+                self.current_event = event
+                break
+        
 
 
 

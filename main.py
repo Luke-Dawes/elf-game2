@@ -176,6 +176,8 @@ class ElfGame:
             
     def refresh_ui(self) -> None:
 
+        self.day.select_new_event()
+
         for entry in self.elf_entries:
             entry.delete(0, tk.END)
             entry.insert(0, "0")
@@ -191,6 +193,8 @@ class ElfGame:
 
         self.weather_display.config(text="Weather")
         self.events_frame.config(text="Events")
+
+        self.events_label.config(text=self.day.current_event["prompt"])
 
         for i, lbl in enumerate(self.leaderboard_labels):
             t = self.teams_data[i]
