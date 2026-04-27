@@ -13,7 +13,7 @@ class Day:
         self.last_blizzard = False
         self.weathers = [  # weather, probability of blizzard and prompt to be displayed
             {"name": "hopeful", "probability": 0.1, "prompt": "☀️☀️☀️ The weather is looking great! ☀️☀️☀️"},
-            {"name": "promising", "probability": 0.2, "prompt": "🌤️🌤️🌤️ The weather is looking promising. 🌤️🌤️🌤️"},
+            {"name": "promising", "probability": 0.2, "prompt": "🌤️🌤️🌤️ The weather is looking promising! 🌤️🌤️🌤️"},
             {"name": "okay", "probability": 0.3, "prompt": "⛅⛅⛅ The weather is looking okay. ⛅⛅⛅"},
             {"name": "mixed", "probability": 0.4, "prompt": "🌥️🌥️🌥️ The weather is looking mixed. 🌥️🌥️🌥️"},
             {"name": "uncertain", "probability": 0.5, "prompt": "☁️☁️☁️ The weather is looking uncertain... ☁️☁️☁️"},
@@ -31,7 +31,7 @@ class Day:
             {"name": "Elf Strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
             {"name": "No Event", "probability": 1.0, "prompt": "No events are happening today."}
         ]
-        self.current_event = None
+        self.current_event = self.events[-1] #last index since this is will ALWAYS be no event (default case)
 
         # ==METHODS==
     

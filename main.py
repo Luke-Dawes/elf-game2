@@ -176,8 +176,6 @@ class ElfGame:
             
     def refresh_ui(self) -> None:
 
-        self.day.select_new_event()
-
         for entry in self.elf_entries:
             entry.delete(0, tk.END)
             entry.insert(0, "0")
@@ -285,8 +283,7 @@ class ElfGame:
         # snowStorm = True if self.current_turn == 7 else False
 
         #snowStorm = False
-
-
+      
 
         rewardMessage = ""
 
@@ -334,6 +331,7 @@ class ElfGame:
         
 
         self.day.increment_day()  # increment day for each new turn
+        self.day.select_new_event()
 
         if self.current_turn == 7:
             self.locations.append({"name": "Mountains", "payout": 50})
