@@ -97,8 +97,6 @@ class ElfGame:
         self.frame.destroy()
         self.waiting_for_name.set(True)
 
-
-
     def create_widgets(self) -> None:
         # Header Info
         self.header_label = tk.Label(self.root, text="", font=("Arial", 16, "bold"))
@@ -154,8 +152,7 @@ class ElfGame:
             lbl.pack(side="left", expand=True)
             self.leaderboard_labels.append(lbl)
 
-
-    def update_remaining_elves_event(self,event):
+    def update_remaining_elves_event(self, event):
         self.update_remaining_elves()
 
     def update_remaining_elves(self):
