@@ -283,7 +283,7 @@ class ElfGame:
         # process the money, maybe show a graphic of a snow storm etc. so it's all together at the end
         # snowStorm = True if self.current_turn == 7 else False
 
-        snowStorm = False
+        #snowStorm = False
 
 
 
@@ -330,7 +330,7 @@ class ElfGame:
 
             rewardMessage += "\n"
         
-        messagebox.showinfo("rewards", rewardMessage)
+        
 
         self.day.increment_day()  # increment day for each new turn
 
@@ -350,7 +350,7 @@ class ElfGame:
         if snowStorm:  # only runs if there is a snowstorm
             self.process_snowstorm()
 
-
+        messagebox.showinfo("rewards", rewardMessage)
         self.refresh_ui()
 
     def process_snowstorm(self):
