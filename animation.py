@@ -6,6 +6,7 @@ class SnowAnimation:
     def __init__(self, root):
         self.root = root
         self.canvas = None
+        self.tension = tk.BooleanVar(value=False)
 
     def move_snow(self, times: int=0) -> None:
 
@@ -22,14 +23,50 @@ class SnowAnimation:
         self.snow_list.clear()  # clears the list
         self.canvas.destroy()  # destroys the canvas (the background)
 
-    def play(self) -> None:
+    def end_tension(self):
+        self.canvas.destroy()
+
+    def play(self, snowstorm) -> None:
         # get current window size
+
         width = self.root.winfo_width()
         height = self.root.winfo_height()
-
-        # canvas for animation
-        self.canvas = tk.Canvas(self.root, width=width, height=height, bg='Black')
+        
+        self.canvas = tk.Canvas(self.root, width=width, height=height, bg='White')
         self.canvas.pack()
+
+        self.text_id = self.canvas.create_text(
+        width // 2, height // 2, # Center it using the real width/height
+        text="", 
+        fill="black",           # Ensure it's visible on white
+        font=("Arial", 20)
+    )
+
+
+        self.building_tension(snowstorm, "")
+
+    def building_tension(self, snowStorm, msg: str, num: int=0):
+        if num >= 30: 
+            if snowStorm:
+                self.start_snow()
+            else:
+                self.end_tension()
+            return
+        
+        msg += '.'
+
+        self.canvas.itemconfig(self.text_id, text=msg)
+        self.root.after(99, self.building_tension, snowStorm, msg, num +1 )
+    
+    def start_snow(self):
+        # canvas for animation
+        self.canvas.delete(self.text_id)
+        self.canvas.config(bg="black")
+        self.canvas.pack()
+
+        width = self.canvas.winfo_width()
+        height = self.canvas.winfo_height()
+
 
         self.snow_list = []
         for _ in range(50):
@@ -45,3 +82,5 @@ class SnowAnimation:
         self.move_snow()  # call the move snow func once, thought it runs async
 
         self.root.after(4000, self.stop_snow)  # animation for 4s
+
+

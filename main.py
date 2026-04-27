@@ -40,6 +40,7 @@ class ElfGame:
         self.waiting_for_name = tk.BooleanVar(value=False)
         self.day = Day()
         self.day.increment_day()
+        self.animation = SnowAnimation(self.root)
 
         #snow
         self.snow_list = []
@@ -347,18 +348,17 @@ class ElfGame:
         self.weather_prompt = tk.Label(self.weather_display, text=self.day.current_weather["prompt"]) #removing destroy just adds new labels
         self.weather_prompt.pack(fill="both")
 
-        if snowStorm:  # only runs if there is a snowstorm
-            self.process_snowstorm()
+        self.playAnimations(snowStorm)
 
-        messagebox.showinfo("rewards", rewardMessage)
+        self.root.after(3500, messagebox.showinfo, "rewards", rewardMessage)
         self.refresh_ui()
 
-    def process_snowstorm(self):
+
+    def playAnimations(self, blizzard):
         self.is_blizzard_done.set(False)
         self.delete_widgets()
 
-        animation = SnowAnimation(self.root)
-        animation.play()
+        self.animation.play(blizzard)
         self.is_blizzard_done.set(True)
 
         self.day.last_blizzard = True  # resets luck meter
