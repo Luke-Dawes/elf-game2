@@ -7,7 +7,10 @@ class SnowAnimation:
         self.root = root
         self.canvas = None
 
-    def move_snow(self) -> None:
+    def move_snow(self, times: int=0) -> None:
+
+        if times >= 50: return
+
         for particle in self.snow_list:
             self.canvas.move(particle, 0, 1)  # makes the y coordinate of particle decrease by 1
 
