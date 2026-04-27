@@ -25,7 +25,9 @@ class Day:
 
         self.days_since_event = 0
         self.events = [
-            {"name": , "prompt": ,}
+            {"name": "Elf Workshop" , "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy?"},
+            {"name": "Elf Strike" , "prompt": " ☆ The elves have decided to go on strike ☆ "}, #add label new line stating who this has affected
+            {"name": "Mysterious Stranger", "prompt": "☆"}
         ]
 
 

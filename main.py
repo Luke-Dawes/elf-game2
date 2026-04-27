@@ -4,7 +4,7 @@ from tkinter import messagebox
 from tkinter import ttk
 
 from team import Team
-from weather import Day
+from day import Day
 from animation import SnowAnimation
 
 
@@ -164,11 +164,15 @@ class ElfGame:
 
     def setup_elf_options(self,elves_left,current_input):
         for i, drop in enumerate(self.elf_entries):
-            self.valuesInDrop = [elves for elves in range(0,elves_left+current_input+1)]
-            print(self.valuesInDrop)
+            self.valuesInDrop = [elves for elves in range(0,elves_left+1)]
             drop.config(values = self.valuesInDrop)    
             
     def refresh_ui(self) -> None:
+
+        for entry in self.elf_entries:
+            entry.delete(0, tk.END)
+            entry.insert(0, "0")
+
         if self.current_team_idx <= self.num_teams:   team = self.teams_data[self.current_team_idx]
 
         self.header_label.config(text=f"Turn {self.current_turn}: {team.name}'s Move") #instead of using team["name"] it's now a class syntax
@@ -188,6 +192,8 @@ class ElfGame:
         team = self.teams_data[self.current_team_idx]
 
         # ===== PROCESS INPUTS =====
+
+
         try:
             allocations = [int(e.get()) for e in self.elf_entries]
             paying = int(self.pay_entry.get())
