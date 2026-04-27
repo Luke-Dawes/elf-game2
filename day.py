@@ -12,13 +12,13 @@ class Day:
         self.concurrent_sun = 0
         self.last_blizzard = False
         self.weathers = [  # weather, probability of blizzard and prompt to be displayed
-            {"name": "promising", "probability": 0.2, "prompt": "The weather is looking promising!"},
-            {"name": "okay", "probability": 0.25, "prompt": "The weather is looking okay."},
-            {"name": "hopeful", "probability": 0.0001, "prompt": "The weather is looking hopeful."},
-            {"name": "dreary", "probability": 0.55, "prompt": "The weather is looking dreary..."},
-            {"name": "mixed", "probability": 0.5, "prompt": "The weather is looking mixed."},
-            {"name": "uncertain", "probability": 0.5, "prompt": "The weather is looking uncertain..."},
-            {"name": "treacherous", "probability": 0.75, "prompt": "The weather is looking treacherous..."}
+            {"name": "hopeful", "probability": 0.1, "prompt": "☀️☀️☀️ The weather is looking great! ☀️☀️☀️"},
+            {"name": "promising", "probability": 0.2, "prompt": "🌤️🌤️🌤️ The weather is looking promising. 🌤️🌤️🌤️"},
+            {"name": "okay", "probability": 0.3, "prompt": "⛅⛅⛅ The weather is looking okay. ⛅⛅⛅"},
+            {"name": "mixed", "probability": 0.4, "prompt": "🌥️🌥️🌥️ The weather is looking mixed. 🌥️🌥️🌥️"},
+            {"name": "uncertain", "probability": 0.5, "prompt": "☁️☁️☁️ The weather is looking uncertain... ☁️☁️☁️"},
+            {"name": "dreary", "probability": 0.6, "prompt": "🌦️🌦️🌦️ The weather is looking dreary... 🌦️🌦️🌦️"},
+            {"name": "treacherous", "probability": 0.8, "prompt": "⛈️⛈️⛈️ The weather is looking treacherous... ⛈️⛈️️⛈️"}
         ]
 
         # ==EVENTS==
