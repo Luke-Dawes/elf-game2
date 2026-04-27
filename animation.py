@@ -1,5 +1,6 @@
 import tkinter as tk
 import random
+import time
 
 
 class SnowAnimation:
@@ -7,6 +8,9 @@ class SnowAnimation:
         self.root = root
         self.canvas = None
         self.tension = tk.BooleanVar(value=False)
+
+        self.blizzard_prompt = ["B","L","I","Z","Z","A","R","D"]
+        self.clear_prompt = ["C","l","e","a","r"," ","S","k","i","e","s"]
 
     def move_snow(self, times: int=0) -> None:
 
@@ -43,20 +47,40 @@ class SnowAnimation:
     )
 
 
-        self.building_tension(snowstorm, "")
+        self.building_tension(snowstorm, "", reset_msg=False)
 
-    def building_tension(self, snowStorm, msg: str, num: int=0):
-        if num >= 30: 
-            if snowStorm:
-                self.start_snow()
+    def building_tension(self, snowStorm, msg: str, num: int=0, reset_msg: bool=False):
+        message_added = False
+        if num >= 27:
+            if not reset_msg: 
+                
+                msg = ""
+                reset_msg = True
+
+            if snowStorm: 
+                if num >= 35:
+                    time.sleep(1)
+                    self.start_snow()
+                else:
+                    msg += self.blizzard_prompt[num-27]
+                    message_added = True
+            
             else:
-                self.end_tension()
-            return
+                if num >= 38:
+                    time.sleep(1)
+                    self.end_tension()
+
+                else:
+                    msg += self.clear_prompt[num-27]
+                    message_added = True
+
+            
+            
         
-        msg += '.'
+        if not message_added: msg += '.'
 
         self.canvas.itemconfig(self.text_id, text=msg)
-        self.root.after(99, self.building_tension, snowStorm, msg, num +1 )
+        self.root.after(99, self.building_tension, snowStorm, msg, num +1, reset_msg)
     
     def start_snow(self):
         # canvas for animation
