@@ -132,14 +132,21 @@ class ElfGame:
 
         # Weather
         self.weather_display = tk.LabelFrame(self.root, text= "Weather", padx=10, pady=10)
-        self.weather_display.pack(fill="both", padx=20, pady=20)
+        self.weather_display.pack(fill="both", padx=20, pady=10)
 
         self.weather_prompt = tk.Label(self.weather_display, text=self.day.current_weather["prompt"])
         self.weather_prompt.pack(fill="both")
 
+        # Events
+        self.events_frame = tk.LabelFrame(self.root, text="Events", padx=10, pady=10)
+        self.events_frame.pack(fill="both", padx=20, pady=10)
+
+        self.events_label = tk.Label(self.events_frame, text="There is nothing happening today")
+        self.events_label.pack(fill="both")
+
         # Leaderboard
         self.leaderboard_frame = tk.LabelFrame(self.root, text="Leaderboard", padx=10, pady=10)
-        self.leaderboard_frame.pack(side="bottom", fill="x", padx=20, pady=20)
+        self.leaderboard_frame.pack(side="bottom", fill="x", padx=20, pady=10)
         
         self.leaderboard_labels = []
         for i in range(4):
@@ -183,6 +190,7 @@ class ElfGame:
         self.update_remaining_elves()
 
         self.weather_display.config(text="Weather")
+        self.events_frame.config(text="Events")
 
         for i, lbl in enumerate(self.leaderboard_labels):
             t = self.teams_data[i]
