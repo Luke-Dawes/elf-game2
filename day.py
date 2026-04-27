@@ -29,6 +29,7 @@ class Day:
             {"name": "Mysterious Stranger", "probability": 0.2, "prompt": "☆ A mysterious stranger has appeared at the factory... ☆"},
             {"name": "Elf Migration", "probability": 0.2, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
             {"name": "Elf Strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
+            {"name": "No Event", "probability": 1.0, "prompt": "No events are happening today."}
         ]
         self.current_event = None
 
