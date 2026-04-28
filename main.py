@@ -333,6 +333,7 @@ class ElfGame:
 
         self.day.increment_day()  # increment day for each new turn
         self.day.select_new_event()
+        self.day.event_runner()
 
         if self.current_turn == 7:
             self.locations.append({"name": "Mountains", "payout": 50})
