@@ -59,16 +59,18 @@ class SnowAnimation:
 
             if snowStorm: 
                 if num >= 35:
-                    time.sleep(1)
+                    #time.sleep(1)
                     self.start_snow()
+                    return
                 else:
                     msg += self.blizzard_prompt[num-27]
                     message_added = True
             
             else:
                 if num >= 38:
-                    time.sleep(1)
+                    #time.sleep(1)
                     self.end_tension()
+                    return
 
                 else:
                     msg += self.clear_prompt[num-27]
