@@ -1,4 +1,6 @@
 import random
+import tkinter as tk
+
 
 class Day:
     def __init__(self):
@@ -25,7 +27,7 @@ class Day:
 
         self.days_since_event = 0
         self.events = [
-            {"name": "elf_workshop" , "probability": 0.2, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy?"},
+            {"name": "elf_workshop" , "probability": 1, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy?"},
             {"name": "mysterious_stranger", "probability": 0.2, "prompt": "☆ A mysterious stranger has appeared at the factory... ☆"},
             {"name": "elf_migration", "probability": 0.2, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
             {"name": "elf_strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
@@ -75,33 +77,36 @@ class Day:
 
     # ==EVENT HANDLERS==
 
-    def event_runner(self):
+    def event_runner(self,events_box):
         match self.current_event['name']:
             case "elf_workshop":
-                self.elf_workshop()
+                self.elf_workshop(events_box)
             case "mysterious_stranger":
-                self.mysterious_stranger()
+                self.mysterious_stranger(events_box)
             case "elf_migration":
-                self.elf_migration()
+                self.elf_migration(events_box)
             case "elf_strike":
-                self.elf_strike()
+                self.elf_strike(events_box)
             case _:
-                self.no_event()
+                self.no_event(events_box)
 
-    def elf_workshop(self):
+    def elf_workshop(self,events_box):
+        input_box = tk.Entry(events_box)
+        input_box.pack()
+        submit_event_button = tk.Button(events_box, command= self.no_event(events_box=events_box))
+        submit_event_button.pack()
+
+    def mysterious_stranger(self,events_box):
         print('run event')
 
-    def mysterious_stranger(self):
+    def elf_migration(self,events_box):
         print('run event')
 
-    def elf_migration(self):
+    def elf_strike(self,events_box):
         print('run event')
 
-    def elf_strike(self):
-        print('run event')
-
-    def no_event(self):
-        return
+    def no_event(self, events_box):
+        print("AAAAAAAAA")
 
 
     

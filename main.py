@@ -145,6 +145,8 @@ class ElfGame:
         self.events_label = tk.Label(self.events_frame, text="There is nothing happening today")
         self.events_label.pack(fill="both")
 
+        self.day.event_runner(self.events_frame)
+
         # Leaderboard
         self.leaderboard_frame = tk.LabelFrame(self.root, text="Leaderboard", padx=10, pady=10)
         self.leaderboard_frame.pack(side="bottom", fill="x", padx=20, pady=10)
@@ -191,7 +193,7 @@ class ElfGame:
 
         self.weather_display.config(text="Weather")
         self.events_frame.config(text="Events")
-
+        
     
         self.events_label.config(text=self.day.current_event["prompt"])
 
@@ -333,7 +335,7 @@ class ElfGame:
 
         self.day.increment_day()  # increment day for each new turn
         self.day.select_new_event()
-        self.day.event_runner()
+        
 
         if self.current_turn == 7:
             self.locations.append({"name": "Mountains", "payout": 50})
