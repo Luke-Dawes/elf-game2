@@ -30,7 +30,7 @@ class ElfGame:
         self.setup_elves_flag = False
         self.root = root
         self.root.title("Elf Game 2")
-        self.root.geometry("700x600")
+        self.root.geometry("700x800")
 
         # Game State
         self.current_turn = 1
@@ -139,17 +139,22 @@ class ElfGame:
         self.weather_prompt.pack(fill="both")
 
         # Events
-        self.events_frame = tk.LabelFrame(self.root, text="Events", padx=10, pady=10)
+
+        self.root.update_idletasks()
+
+        self.events_frame = tk.LabelFrame(self.root, text="Events", padx=10, pady=10, width=self.root.winfo_width())
         self.events_frame.pack(fill="both", padx=20, pady=10)
+        
+        self.events_frame.update_idletasks()
 
         self.events_label = tk.Label(self.events_frame, text="There is nothing happening today")
-        self.events_label.pack(fill="both")
+        self.events_label.pack(fill="both", padx=10, pady=10)
 
         self.day.event_runner(self.events_frame)
 
         # Leaderboard
         self.leaderboard_frame = tk.LabelFrame(self.root, text="Leaderboard", padx=10, pady=10)
-        self.leaderboard_frame.pack(side="bottom", fill="x", padx=20, pady=10)
+        self.leaderboard_frame.pack(side="bottom", fill="x", padx=10, pady=10)
         
         self.leaderboard_labels = []
         for i in range(4):
