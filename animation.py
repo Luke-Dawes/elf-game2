@@ -7,8 +7,8 @@ class SnowAnimation:
         self.root = root
         self.canvas = None
 
-        self.blizzard_prompt = ["B","L","I","Z","Z","A","R","D"]
-        self.clear_prompt = ["C","l","e","a","r"," ","S","k","i","e","s"]
+        self.blizzard_prompt = ["B","L","I","Z","Z","A","R","D", "!"]
+        self.clear_prompt = ["C","l","e","a","r"," ","S","k","i","e","s", "!"]
 
     def move_snow(self, times: int=0) -> None:
 
@@ -57,7 +57,7 @@ class SnowAnimation:
 
             if snowStorm: 
                 
-                if num >= 35:
+                if num >= 36:
                     #time.sleep(1)
                     if num >= 50:
                         self.start_snow()
@@ -68,10 +68,10 @@ class SnowAnimation:
                     message_added = True
             
             else:
-                if num >= 38:
+                if num >= 39:
                     #time.sleep(1)
                     if num >= 50:
-                        self.end_tension()
+                        self.start_sun()
                         return
                     message_added = True
 
@@ -112,4 +112,16 @@ class SnowAnimation:
 
         self.root.after(4000, self.stop_snow)  # animation for 4s
 
+    def start_sun(self):
+        self.canvas.delete(self.text_id)
+        self.canvas.config(bg="lightblue")
+        self.canvas.pack()
 
+        width = self.canvas.winfo_width()
+        height = self.canvas.winfo_height()
+
+        r = 50
+        x, y = width-(3*r), 3*r
+        self.canvas.create_oval(x-r, y-r, x+r, y+r, fill="yellow")
+
+        self.root.after(4000, self.canvas.destroy)
