@@ -122,6 +122,21 @@ class SnowAnimation:
 
         r = 50
         x, y = width-(3*r), 3*r
-        self.canvas.create_oval(x-r, y-r, x+r, y+r, fill="yellow")
+        self.canvas.create_oval(x-r, y-r, x+r, y+r, fill="yellow", outline="yellow")  # sun
+        self.canvas.create_arc(0, height-100, width, height+100, extent=180, fill="green")  # hill
+
+        birds = []
+        for i in range(50, 200, 30):
+            bird = self.canvas.create_line(i, i, i, i+1, arrow="last", arrowshape=(8, 20, 40), fill="grey")
+            birds.append(bird)
+
+        # self.animate_clear_day(bird)
 
         self.root.after(3000, self.canvas.destroy)
+
+    def animate_clear_day(self, bird, n=0):
+        self.canvas.move(bird, 1, 0)
+        n += 1
+        if n > 50:
+            return
+        self.canvas.after(33, self.animate_clear_day(bird, n))
