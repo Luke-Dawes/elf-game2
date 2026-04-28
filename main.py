@@ -319,10 +319,10 @@ class ElfGame:
 
             team.money += totalInc
 
-            if team.motivation >= 2:
+            if team.motivation >= 1.1:
                 valueFromMotivation = max(1, min(team.motivation, 5))
                 percent = valueFromMotivation * 0.1
-                team.money += int(team.money * percent)
+                team.money += int(totalInc * percent)
 
                 rewardMessage += f"☆☆ {team.name} earned £{int(team.money * percent)} via extra work from their elves ☆☆"
 
@@ -349,7 +349,9 @@ class ElfGame:
 
         self.playAnimations(snowStorm)
 
-        self.root.after(3500, messagebox.showinfo, "rewards", rewardMessage)
+        delay = 5000 if not snowStorm else 7000
+
+        self.root.after(delay, messagebox.showinfo, "rewards", rewardMessage)
         self.refresh_ui()
 
 
