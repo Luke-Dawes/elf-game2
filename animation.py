@@ -1,13 +1,11 @@
 import tkinter as tk
 import random
-import time
 
 
 class SnowAnimation:
     def __init__(self, root):
         self.root = root
         self.canvas = None
-        self.tension = tk.BooleanVar(value=False)
 
         self.blizzard_prompt = ["B","L","I","Z","Z","A","R","D"]
         self.clear_prompt = ["C","l","e","a","r"," ","S","k","i","e","s"]

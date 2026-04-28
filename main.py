@@ -192,6 +192,7 @@ class ElfGame:
         self.weather_display.config(text="Weather")
         self.events_frame.config(text="Events")
 
+    
         self.events_label.config(text=self.day.current_event["prompt"])
 
         for i, lbl in enumerate(self.leaderboard_labels):
@@ -324,7 +325,7 @@ class ElfGame:
                 percent = valueFromMotivation * 0.1
                 team.money += int(totalInc * percent)
 
-                rewardMessage += f"☆☆ {team.name} earned £{int(team.money * percent)} via extra work from their elves ☆☆"
+                rewardMessage += f"☆☆ {team.name} earned £{int(team.money * percent)} via extra work from their elves ☆☆\n"
 
             rewardMessage += "\n"
         
