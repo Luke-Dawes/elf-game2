@@ -25,11 +25,11 @@ class Day:
 
         self.days_since_event = 0
         self.events = [
-            {"name": "Elf Workshop" , "probability": 0.2, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy?"},
-            {"name": "Mysterious Stranger", "probability": 0.2, "prompt": "☆ A mysterious stranger has appeared at the factory... ☆"},
-            {"name": "Elf Migration", "probability": 0.2, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
-            {"name": "Elf Strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
-            {"name": "No Event", "probability": 1.0, "prompt": "No events are happening today."}
+            {"name": "elf_workshop" , "probability": 0.2, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy?"},
+            {"name": "mysterious_stranger", "probability": 0.2, "prompt": "☆ A mysterious stranger has appeared at the factory... ☆"},
+            {"name": "elf_migration", "probability": 0.2, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
+            {"name": "elf_strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
+            {"name": "no_event", "probability": 1.0, "prompt": "No events are happening today."}
         ]
         self.current_event = self.events[-1] #last index since this is will ALWAYS be no event (default case)
 
@@ -73,7 +73,35 @@ class Day:
                 break
         
 
+    # ==EVENT HANDLERS==
 
+    def event_runner(self):
+        match self.current_event['name']:
+            case "elf_workshop":
+                self.elf_workshop()
+            case "mysterious_stranger":
+                self.mysterious_stranger()
+            case "elf_migration":
+                self.elf_migration()
+            case "elf_strike":
+                self.elf_strike()
+            case _:
+                self.no_event()
+
+    def elf_workshop(self):
+        print('run event')
+
+    def mysterious_stranger(self):
+        print('run event')
+
+    def elf_migration(self):
+        print('run event')
+
+    def elf_strike(self):
+        print('run event')
+
+    def no_event(self):
+        return
 
 
     

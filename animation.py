@@ -43,7 +43,7 @@ class SnowAnimation:
         width // 2, height // 2, # Center it using the real width/height
         text="", 
         fill="black",           # Ensure it's visible on white
-        font=("Arial", 20)
+        font=("Terminal", 20)
     )
 
 
