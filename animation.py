@@ -58,10 +58,13 @@ class SnowAnimation:
                 reset_msg = True
 
             if snowStorm: 
+                
                 if num >= 35:
                     #time.sleep(1)
-                    self.start_snow()
-                    return
+                    if num >= 50:
+                        self.start_snow()
+                        return
+                    message_added = True
                 else:
                     msg += self.blizzard_prompt[num-27]
                     message_added = True
@@ -69,8 +72,10 @@ class SnowAnimation:
             else:
                 if num >= 38:
                     #time.sleep(1)
-                    self.end_tension()
-                    return
+                    if num >= 50:
+                        self.end_tension()
+                        return
+                    message_added = True
 
                 else:
                     msg += self.clear_prompt[num-27]
@@ -95,7 +100,7 @@ class SnowAnimation:
 
 
         self.snow_list = []
-        for _ in range(50):
+        for _ in range(100):
             size = 5
             x = random.randint(0, width - size)
             y = random.randint(0, height - size)
