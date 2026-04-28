@@ -38,7 +38,7 @@ class SnowAnimation:
         self.canvas.pack()
 
         self.text_id = self.canvas.create_text(
-        width // 2, height // 2, # Center it using the real width/height
+        width // 2, height // 2,  # Center it using the real width/height
         text="", 
         fill="black",           # Ensure it's visible on white
         font=("Terminal", 20)
@@ -124,4 +124,4 @@ class SnowAnimation:
         x, y = width-(3*r), 3*r
         self.canvas.create_oval(x-r, y-r, x+r, y+r, fill="yellow")
 
-        self.root.after(4000, self.canvas.destroy)
+        self.root.after(3000, self.canvas.destroy)

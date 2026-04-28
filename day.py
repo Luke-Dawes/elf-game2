@@ -77,18 +77,18 @@ class Day:
 
     # ==EVENT HANDLERS==
 
-    def event_runner(self,events_box):
-        match self.current_event['name']:
-            case "elf_workshop":
-                self.elf_workshop(events_box)
-            case "mysterious_stranger":
-                self.mysterious_stranger(events_box)
-            case "elf_migration":
-                self.elf_migration(events_box)
-            case "elf_strike":
-                self.elf_strike(events_box)
-            case _:
-                self.no_event(events_box)
+    def event_runner(self, events_box):
+        event_name_to_function_map = {
+            "elf_workshop": self.elf_workshop(events_box),
+            "mysterious_stranger": self.mysterious_stranger(events_box),
+            "elf_migration": self.elf_migration(events_box),
+            "elf_strike": self.elf_strike(events_box),
+            "no_event": None,
+        }
+        try:
+            event_name_to_function_map[self.current_event['name']]()
+        except TypeError:
+            pass
 
     def elf_workshop(self,events_box):
         input_box = tk.Entry(events_box)
