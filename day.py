@@ -34,6 +34,7 @@ class Day:
             {"name": "no_event", "probability": 1.0, "prompt": "No events are happening today."}
         ]
         self.current_event = self.events[-1] #last index since this is will ALWAYS be no event (default case)
+        self.activated_button_in_turn = False
 
         # ==METHODS==
     
@@ -60,7 +61,8 @@ class Day:
         else:
             self.concurrent_sun += 1
             chance += ((self.concurrent_sun - 1) * 0.1)
-            
+
+        if self.current_day > 8: chance *= 1.05    
         if chance > 0.9: chance = 0.9
 
         return self.probability_generator(chance=chance)
@@ -77,41 +79,71 @@ class Day:
 
     # ==EVENT HANDLERS==
 
-    def event_runner(self, events_box):
+    def event_runner(self, events_box, team_data):
+        
+        self.local_team_data = team_data
+        print("inside event runner", self.local_team_data)
+        self.local_events_box = events_box
+        self.current_team_index = 0
+
         event_name_to_function_map = {
-            "elf_workshop": self.elf_workshop(events_box),
-            "mysterious_stranger": self.mysterious_stranger(events_box),
-            "elf_migration": self.elf_migration(events_box),
-            "elf_strike": self.elf_strike(events_box),
-            "no_event": None,
+            "elf_workshop": self.elf_workshop,
+            "mysterious_stranger": self.mysterious_stranger,
+            "elf_migration": self.elf_migration,
+            "elf_strike": self.elf_strike,
+            "no_event": self.no_event,
         }
         try:
-            event_name_to_function_map[self.current_event['name']]()
+            return event_name_to_function_map[self.current_event['name']]()
         except TypeError:
             pass
 
-    def elf_workshop(self,events_box):
-        events_width = events_box.winfo_width()
-        print(events_width)
-        input_box = tk.Entry(events_box)
-        input_box.pack(padx=10, pady=10)
-        input_box.insert(0,"0")
-        submit_event_button = tk.Button(events_box, command= self.no_event, width=10, height=1, bg="green", text="PURCHASE", font=("Arial", 12, "bold"), fg="white")
-        submit_event_button.pack(padx=10, pady=10)
+    def elf_workshop(self):
+        # ==ENTRY BOXES==
+        
+        self.input_box = tk.Entry(self.local_events_box)
+        self.input_box.pack(padx=10, pady=10)
+        self.input_box.insert(0,"0")
 
-    def mysterious_stranger(self,events_box):
-        print('run event')
+        self.submit_event_button = tk.Button(self.local_events_box, command= self.elf_workshop_functioning, width=10, height=1, bg="green", text="PURCHASE", font=("Arial", 12, "bold"), fg="white")
+        self.submit_event_button.pack(padx=10, pady=10)
 
-    def elf_migration(self,events_box):
-        print('run event')
+        return self.local_team_data
 
-    def elf_strike(self,events_box):
+        # ==PROCESSING==
+
+    def elf_workshop_functioning(self):
+        #update team stuff
+        if self.submit_event_button.cget("state") != "disabled" and not self.activated_button_in_turn:
+            self.submit_event_button.config(state="disabled")
+            team_max_team_money = self.local_team_data[self.current_team_index].money
+            print(f"£{team_max_team_money}")
+            no_elves = int(self.input_box.get())
+            self.activated_button_in_turn = True
+        
+        else:
+            self.submit_event_button.config(state="normal")
+            self.activated_button_in_turn = False
+            self.current_team_index += 1
+
+
+
+    def mysterious_stranger(self):
         print('run event')
+        return self.local_team_data
+
+    def elf_migration(self):
+        print('run event')
+        return self.local_team_data
+
+    def elf_strike(self):
+        print('run event')
+        return self.local_team_data
 
     def no_event(self, **kwargs):
-        print("AAAAAAAAA")
+        return self.local_team_data
 
-
+    
     
 
 

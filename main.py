@@ -150,7 +150,9 @@ class ElfGame:
         self.events_label = tk.Label(self.events_frame, text="There is nothing happening today")
         self.events_label.pack(fill="both", padx=10, pady=10)
 
-        self.day.event_runner(self.events_frame)
+
+        self.teams_data = self.day.event_runner(self.events_frame, self.teams_data) #MAKE SURE TO GO INTO PROCESS TURN SOMEHOW TO RESET THE BUTTON PLS PLS PLS PLS PLS ELSE IT WONT UNBLOCK FOR ALL OTHER USERS!!!
+
 
         # Leaderboard
         self.leaderboard_frame = tk.LabelFrame(self.root, text="Leaderboard", padx=10, pady=10)
@@ -208,7 +210,8 @@ class ElfGame:
 
     def process_turn(self) -> None:
         team = self.teams_data[self.current_team_idx]
-
+        if self.day.current_event['name'] == "elf_workshop" and self.day.activated_button_in_turn == True:    self.day.elf_workshop_functioning()
+        
         # ===== PROCESS INPUTS =====
 
 
