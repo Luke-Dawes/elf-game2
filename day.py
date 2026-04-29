@@ -31,8 +31,8 @@ class Day:
         self.days_since_event = 0
         self.events = [ #0.2
             {"name": "elf_workshop" , "probability": 0.2, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy? (£80)"},
-            {"name": "mysterious_stranger", "probability": 0.2, "prompt": "☆ A mysterious stranger has appeared at the factory to lure an elf away... ☆"},
-            {"name": "elf_migration", "probability": 0.2, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
+            {"name": "mysterious_stranger", "probability": 0.3, "prompt": "☆ A mysterious stranger has appeared at the factory... ☆"},
+            {"name": "elf_migration", "probability": 0.3, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
             {"name": "elf_strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
             {"name": "no_event", "probability": 1.0, "prompt": "No events are happening today."}
         ]
