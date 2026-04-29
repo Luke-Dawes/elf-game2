@@ -150,7 +150,7 @@ class Day:
         self.local_team_data[highest_index].elves -= amount
         self.local_team_data[lowest_index].elves += amount
 
-        msg = f"{self.local_team_data[highest_index].name} lost {amount} elves to {self.local_team_data[lowest_index]} due to poor working conditions"
+        msg = f"{self.local_team_data[highest_index].name} lost {amount} elves to {self.local_team_data[lowest_index]} due to poor working conditions and poor leadership"
 
         #need to add it to label ===========================================================================================================================================
 
@@ -170,9 +170,12 @@ class Day:
                 highest_index = i
 
         #remove elves from the highest index
-        self.local_team_data[highest_index].elves = max(0, self.local_team_data[highest_index].evles - 2)
+        amount = max(0, self.local_team_data[highest_index].evles - 2)
+        self.local_team_data[highest_index].elves -= amount
 
         #add to the label? 
+
+        msg = f"{self.local_team_data[highest_index]} lost {amount} of elves due to disagreements with the leadership"
 
         #needs to be done =====================================================================================================
 
@@ -184,7 +187,7 @@ class Day:
         for team in self.local_team_data:
             cost = team.elves * 20
             team.money = max(0, team.money - cost)
-            msg += f"{team.name} lost £{cost} in tax"
+            msg += f"{team.name} lost £{cost} in tax beacuse of poor leadership"
         
         #add message to label ====================================================================================================
         print('run event')
