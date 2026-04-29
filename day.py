@@ -13,7 +13,9 @@ class Day:
         self.current_weather = None
         self.concurrent_sun = 0
         self.last_blizzard = False
-        self.current_text = "There is nothing happening today"
+
+        self.current_text = "There is nothing happening today" #whatever is in this is displayed
+
         self.weathers = [  # weather, probability of blizzard and prompt to be displayed
             {"name": "hopeful", "probability": 0.1, "prompt": "☀️☀️☀️ The weather is looking great! ☀️☀️☀️"},
             {"name": "promising", "probability": 0.2, "prompt": "🌤️🌤️🌤️ The weather is looking promising! 🌤️🌤️🌤️"},
@@ -160,7 +162,6 @@ class Day:
         msg = f"{self.local_team_data[highest_index].name} lost {amount} elves to {self.local_team_data[lowest_index].name} due to poor working conditions and poor leadership"
 
         msg = message_string + "\n" + msg
-        #need to add it to label ===========================================================================================================================================
 
         self.current_text = msg
 
@@ -186,15 +187,9 @@ class Day:
         amount = max(0, min(2, self.local_team_data[highest_index].elves - 2))
         self.local_team_data[highest_index].elves -= amount
 
-        #add to the label? 
-
         msg = f"{self.local_team_data[highest_index].name} lost {amount} of elves due to disagreements with the leadership"
-
         msg = message_string + "\n" + msg
-
         self.current_text = msg
-
-        #needs to be done =====================================================================================================
 
         return self.local_team_data
 
@@ -208,13 +203,9 @@ class Day:
             team.money = max(0, team.money - cost)
             msg += f"{team.name} lost £{cost} in tax beacuse of poor leadership\n"
         
-        #add message to label ====================================================================================================
-
         msg = message_string + "\n" + msg
-
         self.current_text = msg
 
-        
         print('run event')
         return self.local_team_data
 
