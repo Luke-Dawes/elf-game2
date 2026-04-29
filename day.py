@@ -139,7 +139,9 @@ class Day:
                 self.input_box.config(state="disabled")
             
             else:
+                self.submit_event_button.config(state="normal")
                 elf_error_message = "Incorrect elf amount. \n"
+                messagebox.showinfo("Elf Error", elf_error_message)
                 
         
         else:
