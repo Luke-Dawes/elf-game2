@@ -257,8 +257,9 @@ class ElfGame:
 
     def process_turn(self) -> None:
         team = self.teams_data[self.current_team_idx]
-        if self.day.current_event['name'] == "elf_workshop" and self.day.activated_button_in_turn == True:    self.day.elf_workshop_functioning()
-        
+        if self.day.current_event['name'] == "elf_workshop" and self.day.activated_button_in_turn == True:    
+            self.day.elf_workshop_functioning()
+            self.refresh_ui()
         # ===== PROCESS INPUTS =====
 
 

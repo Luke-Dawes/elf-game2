@@ -133,8 +133,9 @@ class Day:
                 self.activated_button_in_turn = True
             
             else:
+                self.submit_event_button.config(state="normal")
                 elf_error_message = "Incorrect elf amount. \n"
-                self.root.after(1000, messagebox.showinfo, "Elf Error", elf_error_message)
+                messagebox.showinfo("Elf Error", elf_error_message)
                 
         
         else:
