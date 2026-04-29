@@ -30,7 +30,7 @@ class Day:
 
         self.days_since_event = 0
         self.events = [ #0.2
-            {"name": "elf_workshop" , "probability": 1, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy? (£80)"},
+            {"name": "elf_workshop" , "probability": 0.2, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy? (£80)"},
             {"name": "mysterious_stranger", "probability": 0.3, "prompt": "☆ A mysterious stranger has appeared at the factory... ☆"},
             {"name": "elf_migration", "probability": 0.3, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
             {"name": "elf_strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
@@ -196,7 +196,7 @@ class Day:
 
         
         for i in range(4):
-            if self.local_team_data[i].motivation < ((random.randint(60,75))/10):
+            if self.local_team_data[i].motivation < ((random.randint(30,45))/10):
                 if highest_money < self.local_team_data[i].money:
                     highest_money = self.local_team_data[i].money
                     highest_index = i
@@ -207,7 +207,7 @@ class Day:
             amount = max(0, min(2, self.local_team_data[highest_index].elves - 2))
             self.local_team_data[highest_index].elves -= amount
 
-            msg = f"{self.local_team_data[highest_index].name} lost {amount} of elves due to disagreements with the leadership"
+            msg = f"{self.local_team_data[highest_index].name} lost {amount} elves due to disagreements with the leadership"
             msg = message_string + "\n" + msg
             self.current_text = msg
         
@@ -222,7 +222,7 @@ class Day:
 
         for team in self.local_team_data:
             cost = team.elves * 20
-            if team.motivation < ((random.randint(60,75))/10): #factors in motivation
+            if team.motivation < ((random.randint(30,45))/10): #factors in motivation
                 team.money = max(0, team.money - cost)
                 msg += f"{team.name} lost £{cost} in tax beacuse of poor leadership\n"
             else:
