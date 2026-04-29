@@ -154,6 +154,8 @@ class Day:
 
         #need to add it to label ===========================================================================================================================================
 
+        self.local_events_box.config(text=msg)
+
         print('run event')
         return self.local_team_data
 
@@ -176,6 +178,7 @@ class Day:
         #add to the label? 
 
         msg = f"{self.local_team_data[highest_index]} lost {amount} of elves due to disagreements with the leadership"
+        self.local_events_box.config(text=msg)
 
         #needs to be done =====================================================================================================
 
@@ -190,6 +193,10 @@ class Day:
             msg += f"{team.name} lost £{cost} in tax beacuse of poor leadership"
         
         #add message to label ====================================================================================================
+
+        self.local_events_box.config(text=msg)
+
+        
         print('run event')
         return self.local_team_data
 

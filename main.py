@@ -260,7 +260,7 @@ class ElfGame:
             #show rewards
             for team in self.teams_data:
                 team.money -= team.payed
-                team.motivation += team.payed * 0.0005
+                team.motivation += team.payed * 0.005
 
             self.current_team_idx = 0
             self.current_turn += 1
@@ -331,8 +331,7 @@ class ElfGame:
             team.money += totalInc
 
             if team.motivation >= 1.1:
-                valueFromMotivation = max(1, min(team.motivation, 20))
-                percent = valueFromMotivation * 0.1
+                percent = team.motivation * 0.1
                 team.money += int(totalInc * percent)
 
                 rewardMessage += f"☆☆ {team.name} earned £{int(totalInc * percent)} via extra work from their elves ☆☆\n"
