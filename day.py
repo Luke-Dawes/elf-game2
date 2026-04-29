@@ -13,6 +13,7 @@ class Day:
         self.current_weather = None
         self.concurrent_sun = 0
         self.last_blizzard = False
+        self.current_text = "There is nothing happening today"
         self.weathers = [  # weather, probability of blizzard and prompt to be displayed
             {"name": "hopeful", "probability": 0.1, "prompt": "☀️☀️☀️ The weather is looking great! ☀️☀️☀️"},
             {"name": "promising", "probability": 0.2, "prompt": "🌤️🌤️🌤️ The weather is looking promising! 🌤️🌤️🌤️"},
@@ -26,8 +27,8 @@ class Day:
         # ==EVENTS==
 
         self.days_since_event = 0
-        self.events = [
-            {"name": "elf_workshop" , "probability": 0.5, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy? (£80)"},
+        self.events = [ #0.2
+            {"name": "elf_workshop" , "probability": 0.2, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy? (£80)"},
             {"name": "mysterious_stranger", "probability": 0.2, "prompt": "☆ A mysterious stranger has appeared at the factory... ☆"},
             {"name": "elf_migration", "probability": 0.2, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
             {"name": "elf_strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
@@ -100,6 +101,10 @@ class Day:
 
     def elf_workshop(self):
         # ==ENTRY BOXES==
+
+        msg = self.current_event["prompt"]
+
+        self.current_text = msg
         
         self.input_box = tk.Entry(self.local_events_box)
         self.input_box.pack(padx=10, pady=10)
@@ -130,6 +135,8 @@ class Day:
 
     def mysterious_stranger(self):
 
+        message_string = self.current_event["prompt"]
+
         highest_index = 0
         highest_money = 0
         lowest_money = 10000000
@@ -150,17 +157,21 @@ class Day:
         self.local_team_data[highest_index].elves -= amount
         self.local_team_data[lowest_index].elves += amount
 
-        msg = f"{self.local_team_data[highest_index].name} lost {amount} elves to {self.local_team_data[lowest_index]} due to poor working conditions and poor leadership"
+        msg = f"{self.local_team_data[highest_index].name} lost {amount} elves to {self.local_team_data[lowest_index].name} due to poor working conditions and poor leadership"
 
+        msg = message_string + "\n" + msg
         #need to add it to label ===========================================================================================================================================
 
-        self.local_events_box.config(text=msg)
+        self.current_text = msg
 
         print('run event')
         return self.local_team_data
 
     def elf_migration(self):
         print('run event')
+
+        message_string = self.current_event["prompt"]
+
 
         #find the team index with the highest amount of money
         highest_index = 0
@@ -177,8 +188,11 @@ class Day:
 
         #add to the label? 
 
-        msg = f"{self.local_team_data[highest_index]} lost {amount} of elves due to disagreements with the leadership"
-        self.local_events_box.config(text=msg)
+        msg = f"{self.local_team_data[highest_index].name} lost {amount} of elves due to disagreements with the leadership"
+
+        msg = message_string + "\n" + msg
+
+        self.current_text = msg
 
         #needs to be done =====================================================================================================
 
@@ -187,20 +201,25 @@ class Day:
     def elf_strike(self):
         msg = ""
 
+        message_string = self.current_event["prompt"]
+
         for team in self.local_team_data:
             cost = team.elves * 20
             team.money = max(0, team.money - cost)
-            msg += f"{team.name} lost £{cost} in tax beacuse of poor leadership"
+            msg += f"{team.name} lost £{cost} in tax beacuse of poor leadership\n"
         
         #add message to label ====================================================================================================
 
-        self.local_events_box.config(text=msg)
+        msg = message_string + "\n" + msg
+
+        self.current_text = msg
 
         
         print('run event')
         return self.local_team_data
 
     def no_event(self, **kwargs):
+        self.current_text = "There is nothing happening today"
         return self.local_team_data
 
     

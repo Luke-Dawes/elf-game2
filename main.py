@@ -202,7 +202,7 @@ class ElfGame:
         self.events_frame.config(text="Events")
         
     
-        self.events_label.config(text=self.day.current_event["prompt"])
+        self.events_label.config(text=self.day.current_text)
 
         for i, lbl in enumerate(self.leaderboard_labels):
             t = self.teams_data[i]
