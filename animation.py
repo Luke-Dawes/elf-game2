@@ -142,21 +142,26 @@ class SnowAnimation:
         for (x, y) in tree_coords_2:
             self.canvas.create_arc(x, height-y, x+w, height-y-h, extent=359, fill="darkgreen", outline="darkgreen")
 
-
+         # birds
         self.birds = []
         for i in range(50, 200, 30):
-            bird = self.canvas.create_line(i, i, i, i+1, arrow="last", arrowshape=(8, 20, 40), fill="grey")
+            bird = self.canvas.create_line(i, i+50, i, i+51, arrow="last", arrowshape=(4, 10, 20), fill="grey")
             self.birds.append(bird)
 
         self.animate_clear_day()
 
-        self.root.after(3000, self.canvas.destroy)
+        self.root.after(4000, self.canvas.destroy)
 
     def animate_clear_day(self, n=0):
         if n > 50: return
 
         for bird in self.birds:
-            self.canvas.move(bird, 1, 0)
+            self.canvas.move(bird, 5, -5)
+
+        r = 50+n
+        x, y = self.canvas.winfo_width() - 150, 150
+        self.canvas.create_oval(x - r, y - r, x + r, y + r, fill="yellow", outline="yellow")  # sun
+
         n += 1
 
         self.root.after(33, lambda: self.animate_clear_day(n))
