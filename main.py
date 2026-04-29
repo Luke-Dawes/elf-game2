@@ -49,7 +49,7 @@ class ElfGame:
         # Location Multipliers (Money earned per elf)
         self.locations = [
             {"name": "Woods", "payout": 10},
-            {"name": "Deep Forest", "payout": 25}
+            {"name": "Deep Forest", "payout": 20}
             #{"name": "Mountains", "payout": 50},
             #{"name": "Mystic Cave", "payout": 100}
         ]
@@ -331,11 +331,11 @@ class ElfGame:
             team.money += totalInc
 
             if team.motivation >= 1.1:
-                valueFromMotivation = max(1, min(team.motivation, 5))
+                valueFromMotivation = max(1, min(team.motivation, 20))
                 percent = valueFromMotivation * 0.1
                 team.money += int(totalInc * percent)
 
-                rewardMessage += f"☆☆ {team.name} earned £{int(team.money * percent)} via extra work from their elves ☆☆\n"
+                rewardMessage += f"☆☆ {team.name} earned £{int(totalInc * percent)} via extra work from their elves ☆☆\n"
 
             rewardMessage += "\n"
         

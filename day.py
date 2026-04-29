@@ -145,7 +145,7 @@ class Day:
                 lowest_money = team_money
                 lowest_index = i
 
-        amount = max(0, self.local_team_data[highest_index].elves - 2)
+        amount = max(0, min(2, self.local_team_data[highest_index].elves - 2))
 
         self.local_team_data[highest_index].elves -= amount
         self.local_team_data[lowest_index].elves += amount
@@ -170,7 +170,7 @@ class Day:
                 highest_index = i
 
         #remove elves from the highest index
-        amount = max(0, self.local_team_data[highest_index].evles - 2)
+        amount = max(0, min(2, self.local_team_data[highest_index].elves - 2))
         self.local_team_data[highest_index].elves -= amount
 
         #add to the label? 
