@@ -30,7 +30,7 @@ class Day:
 
         self.days_since_event = 0
         self.events = [ #0.2
-            {"name": "elf_workshop" , "probability": 0.2, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy? (£80)"},
+            {"name": "elf_workshop" , "probability": 1, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy? (£80)"},
             {"name": "mysterious_stranger", "probability": 0.3, "prompt": "☆ A mysterious stranger has appeared at the factory... ☆"},
             {"name": "elf_migration", "probability": 0.3, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
             {"name": "elf_strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
@@ -121,25 +121,31 @@ class Day:
 
     def elf_workshop_functioning(self):
         #update team stuff
+        self.input_box.config(text="0")
         if self.submit_event_button.cget("state") != "disabled" and not self.activated_button_in_turn:
-            self.submit_event_button.config(state="disabled")
+
             team_max_team_money = self.local_team_data[self.current_team_index].money
             print(f"£{team_max_team_money}")
             no_elves = int(self.input_box.get())
             cost = no_elves * 80
+
             if cost <= team_max_team_money:
+                
                 self.local_team_data[self.current_team_index].money -= cost
                 self.local_team_data[self.current_team_index].elves += no_elves
+
                 self.activated_button_in_turn = True
+                self.submit_event_button.config(state="disabled")
+                self.input_box.config(state="disabled")
             
             else:
                 elf_error_message = "Incorrect elf amount. \n"
-                self.root.after(1000, messagebox.showinfo, "Elf Error", elf_error_message)
                 
         
         else:
             self.submit_event_button.config(state="normal")
             self.activated_button_in_turn = False
+            self.input_box.config(state="normal")
             self.current_team_index += 1
 
 
