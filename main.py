@@ -206,7 +206,7 @@ class ElfGame:
 
         for i, lbl in enumerate(self.leaderboard_labels):
             t = self.teams_data[i]
-            lbl.config(text=f"{t.name}\nMoney: £{t.money}\nElves: {t.elves}\nElf Motivation: {t.motivation * 50}%") #as well as here
+            lbl.config(text=f"{t.name}\nMoney: £{t.money}\nElves: {t.elves}\nElf Motivation: {int(t.motivation * 25)}%") #as well as here
 
     def process_turn(self) -> None:
         team = self.teams_data[self.current_team_idx]
@@ -260,7 +260,7 @@ class ElfGame:
             #show rewards
             for team in self.teams_data:
                 team.money -= team.payed
-                team.motivation += team.payed * 0.005
+                team.motivation += team.payed * 0.0005
 
             self.current_team_idx = 0
             self.current_turn += 1
