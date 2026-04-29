@@ -123,20 +123,42 @@ class SnowAnimation:
         r = 50
         x, y = width-(3*r), 3*r
         self.canvas.create_oval(x-r, y-r, x+r, y+r, fill="yellow", outline="yellow")  # sun
-        self.canvas.create_arc(0, height-100, width, height+100, extent=180, fill="green")  # hill
 
-        birds = []
+        self.canvas.create_polygon((-100, height), (width+400, height), (width/2+150, height - 500), fill="dimgrey")  # volcano
+        self.canvas.create_polygon((width/2-200, height-400), (width/2+500, height-400), (width/2+150, height-510), fill="lightblue")  # top of volcano
+        self.canvas.create_arc((width/2+30, height-380), (width/2+270, height-420), extent=180, start=180, fill="red", outline="red")  # lava
+
+        self.canvas.create_polygon((0, height), (400, height), (200, height - 400), fill="grey")  # mountain 1
+        self.canvas.create_polygon((170, height-344), (230, height-344), (200, height - 400), fill="white")  # mountain 1 top
+        self.canvas.create_polygon((0, height), (250, height), (125, height - 300), fill="grey")  # mountain 2
+
+        self.canvas.create_arc(0, height-100, width, height+100, extent=180, fill="lightgreen", outline="lightgreen")  # hill
+
+        # trees
+        w, h = 40, 60
+        tree_coords_1 = [(10, 10), (50, 10), (110, 50), (170, 80)]
+        for (x, y) in tree_coords_1:
+            self.canvas.create_polygon((x, height-y), (x+w, height-y), (x+w/2, height-y-h), fill="forestgreen", outline="forestgreen")
+        w, h = 40, 60
+        tree_coords_2 = [(400, 100), (500, 60), (420, 80), (390, 50), (480, 20), (450, 40), (520, 10), (370, 5), (600, 40), (700, 5), (400, -10)]
+        for (x, y) in tree_coords_2:
+            self.canvas.create_arc(x, height-y, x+w, height-y-h, extent=359, fill="darkgreen", outline="darkgreen")
+
+
+        self.birds = []
         for i in range(50, 200, 30):
             bird = self.canvas.create_line(i, i, i, i+1, arrow="last", arrowshape=(8, 20, 40), fill="grey")
-            birds.append(bird)
+            self.birds.append(bird)
 
-        # self.animate_clear_day(bird)
+        self.animate_clear_day()
 
         self.root.after(3000, self.canvas.destroy)
 
-    def animate_clear_day(self, bird, n=0):
-        self.canvas.move(bird, 1, 0)
+    def animate_clear_day(self, n=0):
+        for bird in self.birds:
+            self.canvas.move(bird, 1, 0)
         n += 1
         if n > 50:
             return
-        self.canvas.after(33, self.animate_clear_day(bird, n))
+        self.root.after(33, self.animate_clear_day(n))
+
