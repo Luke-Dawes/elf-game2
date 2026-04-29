@@ -38,6 +38,7 @@ class ElfGame:
         self.num_teams = 4
 
         self.waiting_for_name = tk.BooleanVar(value=False)
+        self.waiting_for_information_end = tk.BooleanVar(value=False)
         self.day = Day()
         self.day.increment_day()
         self.animation = SnowAnimation(self.root)
@@ -59,6 +60,9 @@ class ElfGame:
         #self.teams_data = [{"money": 0, "elves": 10, "name": f"Team {i+1}"} for i in range(4)]
         self.teams_data = []
         
+        self.starting_information()
+        self.root.wait_variable(self.waiting_for_information_end)
+
         self.create_teams()
         self.root.wait_variable(self.waiting_for_name) #a hold variable so tkinter runs and allows input
 
@@ -90,8 +94,6 @@ class ElfGame:
         btn = tk.Button(self.frame, text="Start Game", command=self.save_teams_and_start) #on press run saveTeamsAndStart
         btn.pack(pady=20)
 
-        
-
     def save_teams_and_start(self):
         for name in self.names:
             teamName = name.get().strip() or "unknown"
@@ -99,6 +101,51 @@ class ElfGame:
         
         self.frame.destroy()
         self.waiting_for_name.set(True)
+
+    def starting_information(self):
+
+        self.root.update_idletasks()
+        width = self.root.winfo_width()
+        height = self.root.winfo_height()
+
+        self.starting_info_string = [ 
+            "Welcome to the elf game\nThe aim is to get the most money", 
+            "You start with £500 and 12 elves",
+            "You can send them to the near forest for £10, the far forest for £20, or (after day 7) the moutain for £50, or (after day 14) the volcano for £100",
+            "but if there is a blizzard any elves sent to the far forest will have to turn back early with no rewards",
+            "if you sent them to the mountain and theres a blizzard they will freeze and wont be able to come back",
+            "if you sent them to the volcano and there ISNT a blizzard - they will burn",
+            "You can also pay to boost your elves motivation.\nThis will mean your elves will bring back a little bit more money by scavenging on the way there and back and your elves will be less likely to go on strike",
+            "You can also buy elves for £80 at random points in the game. Good luck",
+            "Made by Jake C, Freddie W, Luke D, and 2026 computer science class"]
+
+        self.canvas = tk.Canvas(self.root, width=width, height=height, bg='White')
+        self.canvas.pack()
+
+        self.text_id = self.canvas.create_text(
+        width // 2, height // 2,  # Center it using the real width/height
+        text="", 
+        fill="black",           # Ensure it's visible on white
+        width=width-50,
+        justify="center",
+        font=("Arial", 20)
+    )
+
+        self.add_info(0)
+
+    def add_info(self, index: int=0):
+
+        if index == len(self.starting_info_string):
+            self.canvas.destroy()
+            self.waiting_for_information_end.set(True)
+            return
+        
+        msg = self.starting_info_string[index]
+
+        self.canvas.itemconfig(self.text_id, text=msg)
+        self.root.after(5000, self.add_info, index+1)
+
+
 
     def create_widgets(self) -> None:
         # Header Info
