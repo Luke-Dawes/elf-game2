@@ -129,14 +129,64 @@ class Day:
 
 
     def mysterious_stranger(self):
+
+        highest_index = 0
+        highest_money = 0
+        lowest_money = 10000000
+        lowest_index = 1
+        
+        for i in range(4):
+            team_money = self.local_team_data[i].money
+            if highest_money < team_money:
+                highest_money = team_money
+                highest_index = i
+            
+            elif lowest_money > team_money:
+                lowest_money = team_money
+                lowest_index = i
+
+        amount = max(0, self.local_team_data[highest_index].elves - 2)
+
+        self.local_team_data[highest_index].elves -= amount
+        self.local_team_data[lowest_index].elves += amount
+
+        msg = f"{self.local_team_data[highest_index].name} lost {amount} elves to {self.local_team_data[lowest_index]} due to poor working conditions"
+
+        #need to add it to label ===========================================================================================================================================
+
         print('run event')
         return self.local_team_data
 
     def elf_migration(self):
         print('run event')
+
+        #find the team index with the highest amount of money
+        highest_index = 0
+        highest_money = 0
+        
+        for i in range(4):
+            if highest_money < self.local_team_data[i].money:
+                highest_money = self.local_team_data[i].money
+                highest_index = i
+
+        #remove elves from the highest index
+        self.local_team_data[highest_index].elves = max(0, self.local_team_data[highest_index].evles - 2)
+
+        #add to the label? 
+
+        #needs to be done =====================================================================================================
+
         return self.local_team_data
 
     def elf_strike(self):
+        msg = ""
+
+        for team in self.local_team_data:
+            cost = team.elves * 20
+            team.money = max(0, team.money - cost)
+            msg += f"{team.name} lost £{cost} in tax"
+        
+        #add message to label ====================================================================================================
         print('run event')
         return self.local_team_data
 
