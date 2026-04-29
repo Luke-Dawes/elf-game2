@@ -313,7 +313,7 @@ class ElfGame:
 
         # Move to next team or next turn
         self.current_team_idx += 1
-        print(self.day.current_weather)
+        
 
         if self.current_team_idx >= self.num_teams:
             
@@ -447,9 +447,8 @@ class ElfGame:
         for team in self.teams_data:
             money_list.append([team.money,team.name])
         
-        print(money_list)
         money_list.sort(reverse=True)
-        print(money_list)
+
 
         first = money_list[0][1]
         second = money_list[1][1]
@@ -490,8 +489,8 @@ class ElfGame:
 
         #quit
         self.quit_game = tk.Button(self.conclusion_canvas, command=self.root.destroy)
-        self.quit_game.place_configure(x=(2*w/3)+11, y=40, width= (2*w/3 - ((w/3)+10)))
-        self.quit_game.config(text="Close Game", font=("Terminal", 14),relief="groove", wraplength=(2*w/3 - ((w/3)+10)), bg="darksalmon")
+        self.quit_game.place_configure(x=((2*w/3)+11), y=40, width= 0.5*(2*w/3 - ((w/3)+10)))
+        self.quit_game.config(text="Quit Game", font=("Terminal", 14),relief="raised", wraplength=(2*w/3 - ((w/3)+10)), bg="red")
 
 
 

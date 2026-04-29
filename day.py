@@ -32,8 +32,8 @@ class Day:
         self.events = [ #0.2
             {"name": "elf_workshop" , "probability": 0.2, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy? (£80)"},
             {"name": "mysterious_stranger", "probability": 0.3, "prompt": "☆ A mysterious stranger has appeared at the factory... ☆"},
-            {"name": "elf_migration", "probability": 0.3, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
-            {"name": "elf_strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
+            {"name": "elf_migration", "probability": 0.25, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
+            {"name": "elf_strike" , "probability": 0.3, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
             {"name": "no_event", "probability": 1.0, "prompt": "No events are happening today."}
         ]
         self.current_event = self.events[-1] #last index since this is will ALWAYS be no event (default case)
@@ -42,9 +42,7 @@ class Day:
         # ==METHODS==
     
     def probability_generator(self, chance):
-        print(f"Chance of success is: {chance}")
         test = random.random()
-        print(test)
         return (test < chance)
 
     def select_new_weather(self):  # just chooses a random weather
@@ -85,7 +83,6 @@ class Day:
     def event_runner(self, events_box, team_data):
         
         self.local_team_data = team_data
-        print("inside event runner", self.local_team_data)
         self.local_events_box = events_box
         self.current_team_index = 0
 
@@ -125,7 +122,7 @@ class Day:
         if self.submit_event_button.cget("state") != "disabled" and not self.activated_button_in_turn:
 
             team_max_team_money = self.local_team_data[self.current_team_index].money
-            print(f"£{team_max_team_money}")
+
             no_elves = int(self.input_box.get())
             cost = no_elves * 80
 
@@ -182,7 +179,7 @@ class Day:
 
         self.current_text = msg
 
-        print('run event')
+    
         return self.local_team_data
 
     def elf_migration(self):
@@ -221,8 +218,8 @@ class Day:
         message_string = self.current_event["prompt"]
 
         for team in self.local_team_data:
-            cost = team.elves * 20
-            if team.motivation < ((random.randint(30,45))/10): #factors in motivation
+            cost = team.elves * 10
+            if team.motivation < ((random.randint(30,40))/10): #factors in motivation
                 team.money = max(0, team.money - cost)
                 msg += f"{team.name} lost £{cost} in tax beacuse of poor leadership\n"
             else:
