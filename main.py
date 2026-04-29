@@ -109,15 +109,18 @@ class ElfGame:
         height = self.root.winfo_height()
 
         self.starting_info_string = [ 
-            "Welcome to the elf game\nThe aim is to get the most money", 
+            "Welcome to the elf game!\nThe aim is to get the most money by the end.", 
             "You start with £500 and 12 elves",
-            "You can send them to the near forest for £10, the far forest for £20, or (after day 7) the moutain for £50, or (after day 14) the volcano for £100",
-            "but if there is a blizzard any elves sent to the far forest will have to turn back early with no rewards",
-            "if you sent them to the mountain and theres a blizzard they will freeze and wont be able to come back",
-            "if you sent them to the volcano and there ISNT a blizzard - they will burn",
-            "You can also pay to boost your elves motivation.\nThis will mean your elves will bring back a little bit more money by scavenging on the way there and back and your elves will be less likely to go on strike",
-            "You can also buy elves for £80 at random points in the game. Good luck",
-            "Made by Jake C, Freddie W, Luke D, and 2026 computer science class"]
+            "Each day selects a weather for the elves to scavenge in.",
+            "You can send them to the near forest for £10, the far forest for £20, or (after day 7) the Mountain for £50, or (after day 14) the Volcano for £100.",
+            "If there is a blizzard, any elves sent to the far forest will have to turn back early with no rewards.",
+            "If you sent them to the mountain and there's a blizzard, they will freeze and wont be able to ever come back!",
+            "If you sent them to the volcano and there ISN'T a blizzard - they will burn!",
+            "You can also pay to boost your elves motivation.\nThis will mean your elves will bring back a little bit more money by scavenging on the way there and back. ",
+            "Your elves will be less likely to go on strike with good leadership!",
+            "You can also buy elves for £80 at random points in the game.",
+            "GOOD LUCK!",
+            "Made by\n Jake Canagasuriam;\n Freddie Wason;\n Luke Dawes;\n  And the 2026 Computer Science A-Level Class!"]
 
         self.canvas = tk.Canvas(self.root, width=width, height=height, bg='White')
         self.canvas.pack()
@@ -128,7 +131,7 @@ class ElfGame:
         fill="black",           # Ensure it's visible on white
         width=width-50,
         justify="center",
-        font=("Arial", 20)
+        font=("Terminal", 20)
     )
 
         self.add_info(0)
