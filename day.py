@@ -1,6 +1,6 @@
 import random
 import tkinter as tk
-
+from tkinter import messagebox
 
 class Day:
     def __init__(self):
@@ -31,7 +31,7 @@ class Day:
         self.days_since_event = 0
         self.events = [ #0.2
             {"name": "elf_workshop" , "probability": 0.2, "prompt": " ☆ You have been approached by Santa Claus, who is selling off his elves! ☆ \nHow many will you buy? (£80)"},
-            {"name": "mysterious_stranger", "probability": 0.2, "prompt": "☆ A mysterious stranger has appeared at the factory... ☆"},
+            {"name": "mysterious_stranger", "probability": 0.2, "prompt": "☆ A mysterious stranger has appeared at the factory to lure an elf away... ☆"},
             {"name": "elf_migration", "probability": 0.2, "prompt": "☆ Due to the working conditions, an elf has wandered off... ☆"},
             {"name": "elf_strike" , "probability": 0.2, "prompt": " ☆ The elves have decided to go on strike... ☆ "}, #add label new line stating who this has affected
             {"name": "no_event", "probability": 1.0, "prompt": "No events are happening today."}
@@ -126,7 +126,16 @@ class Day:
             team_max_team_money = self.local_team_data[self.current_team_index].money
             print(f"£{team_max_team_money}")
             no_elves = int(self.input_box.get())
-            self.activated_button_in_turn = True
+            cost = no_elves * 80
+            if cost <= team_max_team_money:
+                self.local_team_data[self.current_team_index].money -= cost
+                self.local_team_data[self.current_team_index].elves += no_elves
+                self.activated_button_in_turn = True
+            
+            else:
+                elf_error_message = "Incorrect elf amount. \n"
+                self.root.after(1000, messagebox.showinfo, "Elf Error", elf_error_message)
+                
         
         else:
             self.submit_event_button.config(state="normal")
@@ -154,12 +163,12 @@ class Day:
                 lowest_money = team_money
                 lowest_index = i
 
-        amount = max(0, min(2, self.local_team_data[highest_index].elves - 2))
+        amount = 1
 
         self.local_team_data[highest_index].elves -= amount
         self.local_team_data[lowest_index].elves += amount
 
-        msg = f"{self.local_team_data[highest_index].name} lost {amount} elves to {self.local_team_data[lowest_index].name} due to poor working conditions and poor leadership"
+        msg = f"One of {self.local_team_data[highest_index].name}'s elves has joined {self.local_team_data[lowest_index].name}..."
 
         msg = message_string + "\n" + msg
 
@@ -169,27 +178,32 @@ class Day:
         return self.local_team_data
 
     def elf_migration(self):
-        print('run event')
-
         message_string = self.current_event["prompt"]
 
 
         #find the team index with the highest amount of money
         highest_index = 0
         highest_money = 0
+        motivation_avoided_count = 0
+
         
         for i in range(4):
-            if highest_money < self.local_team_data[i].money:
-                highest_money = self.local_team_data[i].money
-                highest_index = i
+            if self.local_team_data[i].motivation < ((random.randint(60,75))/10):
+                if highest_money < self.local_team_data[i].money:
+                    highest_money = self.local_team_data[i].money
+                    highest_index = i
+            else: motivation_avoided_count += 1
 
         #remove elves from the highest index
-        amount = max(0, min(2, self.local_team_data[highest_index].elves - 2))
-        self.local_team_data[highest_index].elves -= amount
+        if motivation_avoided_count != 4:
+            amount = max(0, min(2, self.local_team_data[highest_index].elves - 2))
+            self.local_team_data[highest_index].elves -= amount
 
-        msg = f"{self.local_team_data[highest_index].name} lost {amount} of elves due to disagreements with the leadership"
-        msg = message_string + "\n" + msg
-        self.current_text = msg
+            msg = f"{self.local_team_data[highest_index].name} lost {amount} of elves due to disagreements with the leadership"
+            msg = message_string + "\n" + msg
+            self.current_text = msg
+        
+        else: msg += f"All elves returned due to loving their leaders!"
 
         return self.local_team_data
 
@@ -200,13 +214,16 @@ class Day:
 
         for team in self.local_team_data:
             cost = team.elves * 20
-            team.money = max(0, team.money - cost)
-            msg += f"{team.name} lost £{cost} in tax beacuse of poor leadership\n"
+            if team.motivation < ((random.randint(60,75))/10): #factors in motivation
+                team.money = max(0, team.money - cost)
+                msg += f"{team.name} lost £{cost} in tax beacuse of poor leadership\n"
+            else:
+                team.money += cost//2
+                msg += f"Due to high motivation, {team.name}'s elves paid their tax back, offering {team.name} £{cost//2} for their gratitude!\n"
         
         msg = message_string + "\n" + msg
         self.current_text = msg
 
-        print('run event')
         return self.local_team_data
 
     def no_event(self, **kwargs):
