@@ -58,7 +58,6 @@ class SnowAnimation:
             if snowStorm: 
                 
                 if num >= 36:
-                    #time.sleep(1)
                     if num >= 50:
                         self.start_snow()
                         return
@@ -69,7 +68,6 @@ class SnowAnimation:
             
             else:
                 if num >= 39:
-                    #time.sleep(1)
                     if num >= 50:
                         self.start_sun()
                         return
@@ -155,10 +153,11 @@ class SnowAnimation:
         self.root.after(3000, self.canvas.destroy)
 
     def animate_clear_day(self, n=0):
+        if n > 50: return
+
         for bird in self.birds:
             self.canvas.move(bird, 1, 0)
         n += 1
-        if n > 50:
-            return
-        self.root.after(33, self.animate_clear_day(n))
+
+        self.root.after(33, lambda: self.animate_clear_day(n))
 
