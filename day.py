@@ -129,7 +129,7 @@ class Day:
             no_elves = int(self.input_box.get())
             cost = no_elves * 80
 
-            if cost <= team_max_team_money:
+            if 0 <= cost <= team_max_team_money:
                 
                 self.local_team_data[self.current_team_index].money -= cost
                 self.local_team_data[self.current_team_index].elves += no_elves

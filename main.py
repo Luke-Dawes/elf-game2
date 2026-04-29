@@ -60,8 +60,8 @@ class ElfGame:
         #self.teams_data = [{"money": 0, "elves": 10, "name": f"Team {i+1}"} for i in range(4)]
         self.teams_data = []
         
-        self.starting_information()
-        self.root.wait_variable(self.waiting_for_information_end)
+        #self.starting_information()
+        #self.root.wait_variable(self.waiting_for_information_end)
 
         self.create_teams()
         self.root.wait_variable(self.waiting_for_name) #a hold variable so tkinter runs and allows input
@@ -151,6 +151,9 @@ class ElfGame:
 
 
     def create_widgets(self) -> None:
+
+
+
         # Header Info
         self.header_label = tk.Label(self.root, text="", font=("Arial", 16, "bold"))
         self.header_label.pack(pady=10)
@@ -201,8 +204,10 @@ class ElfGame:
         self.events_label.pack(fill="both", padx=10, pady=10)
 
 
-        self.teams_data = self.day.event_runner(self.events_frame, self.teams_data) #MAKE SURE TO GO INTO PROCESS TURN SOMEHOW TO RESET THE BUTTON PLS PLS PLS PLS PLS ELSE IT WONT UNBLOCK FOR ALL OTHER USERS!!!
+        self.teams_data = self.day.event_runner(self.events_frame, self.teams_data) 
 
+        self.end_game_button = tk.Button(self.root, text="End Game", font=("Arial", 12, "bold"), command=self.create_end_screen, bg="salmon")
+        self.end_game_button.pack(side="bottom", fill="x",padx=10, pady=10)
 
         # Leaderboard
         self.leaderboard_frame = tk.LabelFrame(self.root, text="Leaderboard", padx=10, pady=10)
@@ -213,6 +218,10 @@ class ElfGame:
             lbl = tk.Label(self.leaderboard_frame, text="")
             lbl.pack(side="left", expand=True)
             self.leaderboard_labels.append(lbl)
+
+
+        
+
 
     def update_remaining_elves_event(self, event):
         self.update_remaining_elves()
@@ -393,7 +402,7 @@ class ElfGame:
 
         self.day.increment_day()  # increment day for each new turn
         self.day.select_new_event()
-        
+
 
         if self.current_turn == 7:
             self.locations.append({"name": "Mountains", "payout": 50})
@@ -427,6 +436,64 @@ class ElfGame:
         self.day.last_blizzard = True  # resets luck meter
         self.create_widgets()
         self.refresh_ui()
+
+
+
+
+
+
+    def create_end_screen(self):
+        money_list = []
+        for team in self.teams_data:
+            money_list.append([team.money,team.name])
+        
+        print(money_list)
+        money_list.sort(reverse=True)
+        print(money_list)
+
+        first = money_list[0][1]
+        second = money_list[1][1]
+        third = money_list[2][1]
+        fourth = money_list[3][1]
+
+        self.delete_widgets()
+        width = self.root.winfo_width()
+        height = self.root.winfo_height()
+        self.conclusion_canvas = tk.Canvas(master=self.root, width=width, height=height, bg="skyblue")
+        self.conclusion_canvas.pack()
+        self.edit_end_screen(width-15,height-5,first,second,third,fourth)
+
+    def edit_end_screen(self,w,h,first,second,third,fourth):
+        #1st place
+        self.conclusion_canvas.create_rectangle((w/3)+10,h,2*w/3,h/2, fill=("gold"))
+        self.first_place = tk.Label(self.conclusion_canvas)
+        self.first_place.place_configure(x=(w/3)+11, y=h/2 - 40, width= (2*w/3 - ((w/3)+10)))
+        self.first_place.config(text=first, font=("Terminal", 14), relief="groove", wraplength=(2*w/3 - ((w/3)+10)))
+
+        #2nd place
+        self.conclusion_canvas.create_rectangle((2*w/3)+10,h,w,2*h/3, fill=("silver"))
+        self.second_place = tk.Label(self.conclusion_canvas)
+        self.second_place.place_configure(x=(2*w/3)+11, y=2*h/3 - 40, width= (2*w/3 - ((w/3)+10)))
+        self.second_place.config(text=second, font=("Terminal", 14),relief="groove", wraplength=(2*w/3 - ((w/3)+10)))
+
+
+        #3rd place
+        self.conclusion_canvas.create_rectangle(0+10,h,w/3,5*h/6, fill=("chocolate"))
+        self.third_place = tk.Label(self.conclusion_canvas)
+        self.third_place.place_configure(x=11, y=5*h/6 - 40, width= (2*w/3 - ((w/3)+10)))
+        self.third_place.config(text=third, font=("Terminal", 14),relief="groove", wraplength=(2*w/3 - ((w/3)+10)))
+
+        #last place
+        self.last_place = tk.Label(self.conclusion_canvas)
+        self.last_place.place_configure(x=(w/3)+11, y=40, width= (2*w/3 - ((w/3)+10)))
+        self.last_place.config(text=f"Better luck next time, {fourth}!", font=("Terminal", 14),relief="groove", wraplength=(2*w/3 - ((w/3)+10)))   
+
+        #quit
+        self.quit_game = tk.Button(self.conclusion_canvas, command=self.root.destroy)
+        self.quit_game.place_configure(x=(2*w/3)+11, y=40, width= (2*w/3 - ((w/3)+10)))
+        self.quit_game.config(text="Close Game", font=("Terminal", 14),relief="groove", wraplength=(2*w/3 - ((w/3)+10)), bg="darksalmon")
+
+
 
 
 if __name__ == "__main__":
