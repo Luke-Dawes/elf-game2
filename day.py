@@ -193,7 +193,7 @@ class Day:
 
         
         for i in range(4):
-            if self.local_team_data[i].motivation < ((random.randint(30,45))/100):
+            if self.local_team_data[i].motivation < ((random.randint(30,45))/10):
                 if highest_money < self.local_team_data[i].money:
                     highest_money = self.local_team_data[i].money
                     highest_index = i
@@ -208,7 +208,7 @@ class Day:
             msg = message_string + "\n" + msg
             self.current_text = msg
         
-        else: msg += f"All elves returned due to loving their leaders!"
+        else: msg = f"All elves returned due to loving their leaders!"
 
         return self.local_team_data
 
@@ -219,7 +219,7 @@ class Day:
 
         for team in self.local_team_data:
             cost = team.elves * 10
-            if team.motivation < ((random.randint(30,40))/100): #factors in motivation
+            if team.motivation < ((random.randint(30,40))/10): #factors in motivation
                 team.money = max(0, team.money - cost)
                 msg += f"{team.name} lost £{cost} in tax beacuse of poor leadership\n"
             else:

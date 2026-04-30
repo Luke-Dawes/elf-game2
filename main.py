@@ -9,18 +9,10 @@ from animation import SnowAnimation
 
 
 """
-left to do for the base game:
-    information when you start the game explaining everything
-    weather in the main loop                                            -- added processing of weather 
-    shop
-    some end to the game
-    random events i.e. random elves moving
+Bugs
+    elf random turned to -1?
+    team 4 problems when buying elves if not everyone presses confirm 
 
-ideas left to do:
-    map/background image when looking if its a snowstorm or not?                --good plan how to implement though?
-    screen-shake creating anticipation for if its a snowstorm or not
-    taxes?
-    come-back mechanics - however might not be as clear as who's going to win bc motivation
 
 """
 
@@ -119,6 +111,8 @@ class ElfGame:
             "You can also pay to boost your elves motivation.\nThis will mean your elves will bring back a little bit more money by scavenging on the way there and back. ",
             "Your elves will be less likely to go on strike with good leadership!",
             "You can also buy elves for £80 at random points in the game.",
+            "The game has lots of bugs, so there is a new rule.",
+            "When there is a shop, you can only buy elves. You cannot send elves anywhere - they will not earn any rewards, but will still die?",
             "GOOD LUCK!",
             "Made by\n Jake Canagasuriam;\n Freddie Wason;\n Luke Dawes;\n  And the 2026 Computer Science A-Level Class!"]
 
