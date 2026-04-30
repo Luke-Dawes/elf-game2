@@ -60,8 +60,8 @@ class ElfGame:
         #self.teams_data = [{"money": 0, "elves": 10, "name": f"Team {i+1}"} for i in range(4)]
         self.teams_data = []
         
-        #self.starting_information()
-        #self.root.wait_variable(self.waiting_for_information_end)
+        self.starting_information()
+        self.root.wait_variable(self.waiting_for_information_end)
 
         self.create_teams()
         self.root.wait_variable(self.waiting_for_name) #a hold variable so tkinter runs and allows input
