@@ -150,10 +150,12 @@ class SnowAnimation:
 
         self.animate_clear_day()
 
-        self.root.after(4000, self.canvas.destroy)
+        #self.root.after(4000, self.canvas.destroy)
 
     def animate_clear_day(self, n=0):
-        if n > 50: return
+        if n > 50: 
+            self.canvas.destroy()
+            return
 
         for bird in self.birds:
             self.canvas.move(bird, 5, -5)
