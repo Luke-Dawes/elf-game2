@@ -168,7 +168,7 @@ class Day:
                 lowest_money = team_money
                 lowest_index = i
 
-        amount = 1
+        amount = 1 if self.local_team_data[highest_index].elves != 0 else 0
 
         self.local_team_data[highest_index].elves -= amount
         self.local_team_data[lowest_index].elves += amount
